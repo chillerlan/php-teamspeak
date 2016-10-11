@@ -1,0 +1,31 @@
+{
+	"name": "chillerlan/php-teamspeak",
+	"description": "a teampseak browser module. PHP7",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "smiley",
+			"email": "smiley@chillerlan.net"
+		}
+	],
+	"require": {
+		"php": ">=7.0.3",
+		"vlucas/phpdotenv": "2.*"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "5.5.*"
+	},
+	"autoload": {
+		"files": [
+		],
+		"psr-4": {
+			"chillerlan\\Teamspeak\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"chillerlan\\TeamspeakTest\\": "tests/",
+			"chillerlan\\TeamspeakExample\\": "example/"
+		}
+	}
+}
