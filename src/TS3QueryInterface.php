@@ -7,7 +7,7 @@
  * @version      3.0.13.4
  *
  * @filesource   TS3QueryInterface.php
- * @created      11.10.2016
+ * @created      22.02.2017
  * @package      chillerlan\Teamspeak
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2016 Smiley

@@ -9,28 +9,11 @@
 
 namespace chillerlan\TeamspeakExample;
 
-require_once __DIR__.'/../vendor/autoload.php';
-
-use chillerlan\Teamspeak\TS3Client;
-use chillerlan\Teamspeak\TS3Config;
-use Dotenv\Dotenv;
-
-(new Dotenv(__DIR__.'/../config', '.env'))->load();
-
-
-$ts3config = new TS3Config;
-
-$ts3config->host           = getenv('TS3_HOST');
-$ts3config->port           = getenv('TS3_PORT');
-$ts3config->vserver        = getenv('TS3_VSERVER');
-$ts3config->query_user     = getenv('TS3_QUERY_USER');
-$ts3config->query_password = getenv('TS3_QUERY_PASS');
-
-$ts3 = new TS3Client($ts3config);
-$ts3->connect();
+require_once __DIR__.'/common.php';
 
 $commands = new \stdClass;
 
+/** @var \chillerlan\Teamspeak\TS3Client $ts3 */
 $version = explode(' ', $ts3->send('serverinfo')->parse_kv()->virtualserver_version)[0];
 
 $helpfile = __DIR__.'/../storage/ts3help-'.$version.'.json';
@@ -44,11 +27,11 @@ $help = $ts3->send('help')->data; // SEND HALP!!1
 $start = array_search('Command Overview:', $help) + 1;
 $count = count($help);
 
-$_commands = [];
+$temp_commands = [];
 for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 
 	if(empty($help[$i])){
-		break; // @codeCoverageIgnore
+		break;
 	}
 
 	$cmd = explode('|', $help[$i]);
@@ -65,7 +48,7 @@ for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 
 	if(empty($c->command)){
 		// add a continued line to the previous command's shortdesc and go on (permreset)
-		$_commands[--$j]->shortdesc .= ' '. trim($cmd[1]);
+		$temp_commands[--$j]->shortdesc .= ' '.trim($cmd[1]);
 
 		continue;
 	}
@@ -73,7 +56,7 @@ for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 		continue;
 	}
 
-	$_commands[$j] = $c;
+	$temp_commands[$j] = $c;
 
 	$cmd_help = $ts3->send('help '.$c->command)->data;
 
@@ -97,8 +80,8 @@ for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 			if($usage[0] === 'Usage:'){
 				$c->usage = $usage[1];
 
-				$_params = explode(' ', $c->usage);
-				array_shift($_params);
+				$params = explode(' ', $c->usage);
+				array_shift($params);
 
 				$c->params = array_map(function($v){
 					$p = new \stdClass;
@@ -114,7 +97,7 @@ for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 					}
 
 					return $p;
-				}, $_params);
+				}, $params);
 			}
 
 		}
@@ -131,7 +114,7 @@ for($i = $start, $j = 0; $i < $count - $start; $i++, $j++){
 
 }
 
-foreach($_commands as $cm){
+foreach($temp_commands as $cm){
 	$cm->description = trim($cm->description);
 	$cm->permissions = !empty($cm->permissions)
 		? explode(' ', trim($cm->permissions))

@@ -136,6 +136,9 @@ namespace chillerlan\Teamspeak;
  */
 class TS3QueryAPI extends TS3Client{
 
+	/**
+	 * @var \stdClass
+	 */
 	protected $methods;
 
 	/**
@@ -149,20 +152,21 @@ class TS3QueryAPI extends TS3Client{
 		$this->map_api();
 	}
 
+	/**
+	 * @return \chillerlan\Teamspeak\TS3QueryAPI
+	 * @throws \chillerlan\Teamspeak\TS3ClientException
+	 */
+	protected function map_api():TS3QueryAPI {
+		$file = $this->config->storagedir.$this->config->filename.'-'.$this->config->apiversion.'.json';
 
-	protected function map_api(){
-		$version = explode(' ', $this->send('serverinfo')->parse_kv()->virtualserver_version)[0];
-		$file    = $this->config->storagedir.$this->config->filename.'-'.$version.'.json';
-
-		if(is_file($file)){
-			$this->methods = json_decode(file_get_contents($file));
-
-			return $this;
+		if(!is_file($file)){
+			throw new TS3ClientException('please create a helpfile first');
 		}
 
-		throw new TS3ClientException('please create a helpfile first');
-	}
+		$this->methods = json_decode(file_get_contents($file));
 
+		return $this;
+	}
 
 	/**
 	 * @param $method
@@ -171,12 +175,12 @@ class TS3QueryAPI extends TS3Client{
 	 * @return \chillerlan\Teamspeak\TS3Response
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function __call($method, $arguments){
+	public function __call(string $method, array $arguments):TS3Response {
 
 		if(isset($this->methods->{$method})){
-			$m = $this->methods->{$method};
-
+			$m    = $this->methods->{$method};
 			$args = [];
+
 			if(!empty($m->params) && is_array($arguments[0]) && !empty($arguments[0])){
 
 				foreach($arguments[0] as $k => $param){
@@ -195,13 +199,13 @@ class TS3QueryAPI extends TS3Client{
 
 				}
 
+				return $this->send($method.' '.implode(' ', $args));
 			}
 
-			return $this->send($method.(!empty($args) ? ' '.implode(' ', $args) : ''));
+			return $this->send($method);
 		}
 
 		throw new TS3ClientException('command not found');
-
 	}
 
 }

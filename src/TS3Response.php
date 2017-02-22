@@ -62,9 +62,9 @@ class TS3Response{
 	/**
 	 * @param $property
 	 *
-	 * @return bool
+	 * @return mixed
 	 */
-	public function __get($property){
+	public function __get(string $property){
 
 		if(property_exists($this, $property)){
 			return $this->{$property};
@@ -112,7 +112,7 @@ class TS3Response{
 	 *
 	 * @return \stdClass
 	 */
-	public function parse_kv(string $str = null):\stdClass{
+	public function parse_kv(string $str = null):\stdClass {
 		$str = !empty($str) ? $str : $this->data[0];
 		$str = explode(' ', $str);
 

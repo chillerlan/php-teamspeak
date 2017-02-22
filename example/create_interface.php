@@ -9,25 +9,9 @@
 
 namespace chillerlan\TeamspeakExample;
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__.'/common.php';
 
-use chillerlan\Teamspeak\TS3Client;
-use chillerlan\Teamspeak\TS3Config;
-use Dotenv\Dotenv;
-
-(new Dotenv(__DIR__.'/../config', '.env'))->load();
-
-$ts3config = new TS3Config;
-
-$ts3config->host           = getenv('TS3_HOST');
-$ts3config->port           = getenv('TS3_PORT');
-$ts3config->vserver        = getenv('TS3_VSERVER');
-$ts3config->query_user     = getenv('TS3_QUERY_USER');
-$ts3config->query_password = getenv('TS3_QUERY_PASS');
-
-$ts3 = new TS3Client($ts3config);
-$ts3->connect();
-
+/** @var \chillerlan\Teamspeak\TS3Client $ts3 */
 $version = explode(' ', $ts3->send('serverinfo')->parse_kv()->virtualserver_version)[0];
 
 $helpfile = __DIR__.'/../storage/ts3help-'.$version.'.json';
@@ -132,6 +116,7 @@ foreach($methodlist as $method){
 	 */
 	 public function '.$m.(is_null($method->example->response) ? '' : ':TS3Response').';
 ';
+
 	echo ' * @method '.(is_null($method->example->response) ? 'void       ' : 'TS3Response').' '.$m.PHP_EOL;
 }
 

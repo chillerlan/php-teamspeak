@@ -51,8 +51,8 @@ class TS3Client{
 	 * @return array
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function connect(){
-		$this->socket = @fsockopen($this->config->host, $this->config->port, $errno, $errstr, 3);
+	public function connect():array {
+		$this->socket = @fsockopen($this->config->host, $this->config->port, $errno, $errstr,3);
 
 		if(!$this->socket){
 			throw new TS3ClientException('could not connect: #'.$errno.' '.$errstr);
@@ -69,7 +69,7 @@ class TS3Client{
 	/**
 	 * @return array
 	 */
-	public function disconnect(){
+	public function disconnect():array {
 
 		if($this->socket){
 			$r = [
@@ -94,7 +94,7 @@ class TS3Client{
 	 * @return \chillerlan\Teamspeak\TS3Response
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function send(string $command){
+	public function send(string $command):TS3Response {
 
 		if(!$this->socket){
 			throw new TS3ClientException('not connected');
@@ -107,21 +107,10 @@ class TS3Client{
 		}
 
 		if(fwrite($this->socket, $command.PHP_EOL) !== false){
-			return $this->receive($command);
+			return new TS3Response($command, stream_get_contents($this->socket));
 		}
 
 		throw new TS3ClientException('could not send command: '.$command); // @codeCoverageIgnore
-	}
-
-	/**
-	 * @param $command
-	 *
-	 * @return \chillerlan\Teamspeak\TS3Response
-	 */
-	protected function receive($command){
-		$data = stream_get_contents($this->socket);
-
-		return new TS3Response($command, $data);
 	}
 
 }
