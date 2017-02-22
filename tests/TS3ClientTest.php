@@ -16,8 +16,9 @@ use chillerlan\Teamspeak\TS3Client;
 use chillerlan\Teamspeak\TS3Config;
 use chillerlan\Teamspeak\TS3Response;
 use Dotenv\Dotenv;
+use PHPUnit\Framework\TestCase;
 
-class TS3ClientTest extends \PHPUnit_Framework_TestCase{
+class TS3ClientTest extends TestCase{
 
 	/**
 	 * @var \chillerlan\Teamspeak\TS3Client
