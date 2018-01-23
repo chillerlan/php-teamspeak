@@ -4,21 +4,25 @@
 	"license": "MIT",
 	"type": "library",
 	"keywords": [
-		"teamspeak",
-		"client"
+		"teamspeak", "client"
 	],
 	"authors": [
 		{
 			"name": "smiley",
-			"email": "smiley@chillerlan.net"
+			"email": "smiley@chillerlan.net",
+			"homepage": "https://github.com/codemasher"
 		}
 	],
+	"support": {
+		"issues": "https://github.com/chillerlan/php-teamspeak/issues",
+		"source": "https://github.com/chillerlan/php-teamspeak"
+	},
 	"require": {
-		"php": ">=7.0.3",
-		"vlucas/phpdotenv": "2.*"
+		"php": "^7.0.3",
+		"chillerlan/php-traits": "^1.1"
 	},
 	"require-dev": {
-		"phpunit/phpunit": "6.0.*"
+		"phpunit/phpunit": "^6.5"
 	},
 	"autoload": {
 		"psr-4": {
