@@ -14,9 +14,9 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use chillerlan\Teamspeak\TS3Client;
 use chillerlan\Teamspeak\TS3Config;
-use Dotenv\Dotenv;
+use chillerlan\Traits\DotEnv;
 
-(new Dotenv(__DIR__.'/../config', '.env'))->load();
+(new DotEnv(__DIR__.'/../config', '.env'))->load();
 
 $ts3config = new TS3Config;
 

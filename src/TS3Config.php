@@ -24,5 +24,5 @@ class TS3Config{
 
 	public $storagedir = __DIR__.'/../storage/';
 	public $filename = 'ts3help';
-	public $apiversion = '3.0.13.4';
+	public $apiversion = '3.0.13.6';
 }

@@ -15,7 +15,7 @@ namespace chillerlan\TeamspeakTest;
 use chillerlan\Teamspeak\TS3Client;
 use chillerlan\Teamspeak\TS3Config;
 use chillerlan\Teamspeak\TS3Response;
-use Dotenv\Dotenv;
+use chillerlan\Traits\DotEnv;
 use PHPUnit\Framework\TestCase;
 
 class TS3ClientTest extends TestCase{
@@ -31,7 +31,7 @@ class TS3ClientTest extends TestCase{
 	protected $ts3config;
 
 	protected function setUp(){
-		(new Dotenv(__DIR__.'/../config', '.env'))->load();
+		(new DotEnv(__DIR__.'/../config', '.env'))->load();
 		$this->ts3config = new TS3Config;
 
 		$this->ts3config->host           = getenv('TS3_HOST');

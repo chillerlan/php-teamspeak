@@ -32,7 +32,7 @@ $interface = '<?php
  * @created      '.date('d.m.Y').'
  * @package      chillerlan\Teamspeak
  * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2016 Smiley
+ * @copyright    2018 Smiley
  * @license      MIT
  */
 

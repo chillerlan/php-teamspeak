@@ -4,13 +4,13 @@
  *
  * auto generated for documentation purposes
  *
- * @version      3.0.13.4
+ * @version      3.0.13.8
  *
  * @filesource   TS3QueryInterface.php
- * @created      22.02.2017
+ * @created      23.01.2018
  * @package      chillerlan\Teamspeak
  * @author       Smiley <smiley@chillerlan.net>
- * @copyright    2016 Smiley
+ * @copyright    2018 Smiley
  * @license      MIT
  */
 

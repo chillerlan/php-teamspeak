@@ -1,0 +1,2679 @@
+{
+    "banadd": {
+        "command": "banadd",
+        "params": {
+            "ip": {
+                "name": "ip",
+                "value": "regexp"
+            },
+            "name": {
+                "name": "name",
+                "value": "regexp"
+            },
+            "uid": {
+                "name": "uid",
+                "value": "clientUID"
+            }
+        },
+        "permissions": [
+            "b_client_ban_create"
+        ],
+        "shortdesc": "create a ban rule",
+        "description": "Adds a new ban rule on the selected virtual server. All parameters are optional but at least one of the following must be set: ip, name, or uid.",
+        "usage": "banadd [ip={regexp}] [name={regexp}] [uid={clientUID}]",
+        "example": {
+            "request": "banadd ip=1.2.3.4 banreason=just\\s4\\sfun",
+            "response": "banid=1"
+        }
+    },
+    "banclient": {
+        "command": "banclient",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            },
+            "time": {
+                "name": "time",
+                "value": "timeInSeconds"
+            },
+            "banreason": {
+                "name": "banreason",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "i_client_ban_power",
+            "i_client_needed_ban_power"
+        ],
+        "shortdesc": "ban a client",
+        "description": "Bans the client specified with ID clid from the server. Please note that this will create two separate ban rules for the targeted clients IP address and his unique identifier.",
+        "usage": "banclient clid={clientID} [time={timeInSeconds}] [banreason={text}]",
+        "example": {
+            "request": "banclient clid=4 time=3600",
+            "response": "banid=2\r\nbanid=3"
+        }
+    },
+    "bandel": {
+        "command": "bandel",
+        "params": {
+            "banid": {
+                "name": "banid",
+                "value": "banID"
+            }
+        },
+        "permissions": [
+            "b_client_ban_delete",
+            "b_client_ban_delete_own"
+        ],
+        "shortdesc": "delete a ban rule",
+        "description": "Deletes the ban rule with ID banid from the server.",
+        "usage": "bandel banid={banID}",
+        "example": {
+            "request": "bandel banid=3",
+            "response": null
+        }
+    },
+    "bandelall": {
+        "command": "bandelall",
+        "params": [],
+        "permissions": [
+            "b_client_ban_delete"
+        ],
+        "shortdesc": "delete all ban rules",
+        "description": "Deletes all active ban rules from the server.",
+        "usage": "bandelall",
+        "example": {
+            "request": "bandelall",
+            "response": null
+        }
+    },
+    "banlist": {
+        "command": "banlist",
+        "params": [],
+        "permissions": [
+            "b_client_ban_list"
+        ],
+        "shortdesc": "list ban rules on a virtual server",
+        "description": "Displays a list of active bans on the selected virtual server.",
+        "usage": "banlist",
+        "example": {
+            "request": "banlist",
+            "response": "banid=7 ip=1.2.3.4 created=1259444002242 invokername=Sven invokercldbid=56 invokeruid=oHhi9WzXLNEFQOwAu4JYKGU+C+c= reason enforcements=0"
+        }
+    },
+    "bindinglist": {
+        "command": "bindinglist",
+        "params": {
+            "subsystem": {
+                "name": "subsystem",
+                "value": "voice|query|filetransfer"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_binding_list"
+        ],
+        "shortdesc": "list IP addresses used by the server instance",
+        "description": "Displays a list of IP addresses used by the server instance on multi-homed machines. If no subsystem is specified, \"voice\" is used by default.",
+        "usage": "bindinglist [subsystem={voice|query|filetransfer}]",
+        "example": {
+            "request": "bindinglist",
+            "response": "ip=0.0.0.0|ip=0::0"
+        }
+    },
+    "channeladdperm": {
+        "command": "channeladdperm",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "assign permission to channel",
+        "description": "Adds a set of specified permissions to a channel. Multiple permissions can be added by providing the two parameters of each permission. A permission can be specified by permid or permsid.",
+        "usage": "channeladdperm cid={channelID} [permid={permID}...]",
+        "example": {
+            "request": "channeladdperm cid=16 permid=17276 permvalue=50|permid=21415 permvalue=20",
+            "response": null
+        }
+    },
+    "channelclientaddperm": {
+        "command": "channelclientaddperm",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "assign permission to channel-client combi",
+        "description": "Adds a set of specified permissions to a client in a specific channel. Multiple permissions can be added by providing the three parameters of each permission. A permission can be specified by permid or permsid.",
+        "usage": "channelclientaddperm cid={channelID} cldbid={clientDBID}",
+        "example": {
+            "request": "channelclientaddperm cid=12 cldbid=3 permid=17276 permvalue=50|permid=21415 permvalue=20",
+            "response": null
+        }
+    },
+    "channelclientdelperm": {
+        "command": "channelclientdelperm",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "remove permission from channel-client combi",
+        "description": "Removes a set of specified permissions from a client in a specific channel. Multiple permissions can be removed at once. A permission can be specified by permid or permsid.",
+        "usage": "channelclientdelperm cid={channelID} cldbid={clientDBID}",
+        "example": {
+            "request": "channelclientdelperm cid=12 cldbid=3 permid=17276|permid=21415",
+            "response": null
+        }
+    },
+    "channelclientpermlist": {
+        "command": "channelclientpermlist",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelclient_permission_list"
+        ],
+        "shortdesc": "list channel-client specific permissions",
+        "description": "Displays a list of permissions defined for a client in a specific channel.",
+        "usage": "channelclientpermlist cid={channelID} cldbid={clientDBID} [-permsid]",
+        "example": {
+            "request": "channelclientpermlist cid=12 cldbid=3",
+            "response": "cid=12 cldbid=3 permid=4353 permvalue=1 permnegated=0 permskip=0|permid=17276 permvalue=50 permnegated=0 permskip=0|permid=21415 ..."
+        }
+    },
+    "channelcreate": {
+        "command": "channelcreate",
+        "params": {
+            "channel_name": {
+                "name": "channel_name",
+                "value": "channelName"
+            },
+            "channel_properties": {
+                "name": "channel_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "i_channel_min_depth",
+            "i_channel_max_depth",
+            "b_channel_create_child",
+            "b_channel_create_permanent",
+            "b_channel_create_semi_permanent",
+            "b_channel_create_temporary",
+            "b_channel_create_with_topic",
+            "b_channel_create_with_description",
+            "b_channel_create_with_password",
+            "b_channel_create_modify_with_codec_speex8",
+            "b_channel_create_modify_with_codec_speex16",
+            "b_channel_create_modify_with_codec_speex32",
+            "b_channel_create_modify_with_codec_celtmono48",
+            "i_channel_create_modify_with_codec_maxquality",
+            "i_channel_create_modify_with_codec_latency_factor_min",
+            "b_channel_create_with_maxclients",
+            "b_channel_create_with_maxfamilyclients",
+            "b_channel_create_with_sortorder",
+            "b_channel_create_with_default",
+            "b_channel_create_with_needed_talk_power"
+        ],
+        "shortdesc": "create a channel",
+        "description": "Creates a new channel using the given properties and displays its ID. Note that this command accepts multiple properties which means that you're able to specifiy all settings of the new channel at once. For detailed information, see Channel Properties.",
+        "usage": "channelcreate channel_name={channelName} [channel_properties...]",
+        "example": {
+            "request": "channelcreate channel_name=My\\sChannel channel_topic=My\\sTopic",
+            "response": "cid=16"
+        }
+    },
+    "channeldelete": {
+        "command": "channeldelete",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "force": {
+                "name": "force",
+                "value": "1|0"
+            }
+        },
+        "permissions": [
+            "b_channel_delete_permanent",
+            "b_channel_delete_semi_permanent",
+            "b_channel_delete_temporary",
+            "b_channel_delete_flag_force"
+        ],
+        "shortdesc": "delete a channel",
+        "description": "Deletes an existing channel by ID. If force is set to 1, the channel will be deleted even if there are clients within. The clients will be kicked to the default channel with an appropriate reason message.",
+        "usage": "channeldelete cid={channelID} force={1|0}",
+        "example": {
+            "request": "channeldelete cid=16 force=1",
+            "response": null
+        }
+    },
+    "channeldelperm": {
+        "command": "channeldelperm",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "123"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": "permName"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "remove permission from channel",
+        "description": "Removes a set of specified permissions from a channel. Multiple permissions can be removed at once. A permission can be specified by permid or permsid.",
+        "usage": "channeldelperm cid=123 [permid={permID}...] [permsid={permName}...]",
+        "example": {
+            "request": "channeldelperm cid=16 permid=17276|permid=21415",
+            "response": null
+        }
+    },
+    "channeledit": {
+        "command": "channeledit",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "channel_properties": {
+                "name": "channel_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "i_channel_min_depth",
+            "i_channel_max_depth",
+            "b_channel_modify_parent",
+            "b_channel_modify_make_default",
+            "b_channel_modify_make_permanent",
+            "b_channel_modify_make_semi_permanent",
+            "b_channel_modify_make_temporary",
+            "b_channel_modify_name",
+            "b_channel_modify_topic",
+            "b_channel_modify_description",
+            "b_channel_modify_password",
+            "b_channel_modify_codec",
+            "b_channel_create_modify_with_codec_speex8",
+            "b_channel_create_modify_with_codec_speex16",
+            "b_channel_create_modify_with_codec_speex32",
+            "b_channel_create_modify_with_codec_celtmono48",
+            "b_channel_modify_codec_quality",
+            "b_channel_create_modify_with_codec_maxquality",
+            "b_channel_modify_codec_latency_factor",
+            "b_channel_modify_make_codec_encrypted",
+            "b_channel_modify_maxclients",
+            "b_channel_modify_maxfamilyclients",
+            "b_channel_modify_sortorder",
+            "b_channel_modify_needed_talk_power",
+            "i_channel_modify_power",
+            "i_channel_needed_modify_power"
+        ],
+        "shortdesc": "change channel properties",
+        "description": "Changes a channels configuration using given properties. Note that this command accepts multiple properties which means that you're able to change all settings of the channel specified with cid at once. For detailed information, see Channel Properties.",
+        "usage": "channeledit cid={channelID} [channel_properties...]",
+        "example": {
+            "request": "channeledit cid=15 channel_codec_quality=3 channel_description=My\\sDescription",
+            "response": null
+        }
+    },
+    "channelfind": {
+        "command": "channelfind",
+        "params": {
+            "pattern": {
+                "name": "pattern",
+                "value": "channelName"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channel_search"
+        ],
+        "shortdesc": "find channel by name",
+        "description": "Displays a list of channels matching a given name pattern.",
+        "usage": "channelfind pattern={channelName}",
+        "example": {
+            "request": "channelfind pattern=default",
+            "response": "cid=15 channel_name=Default\\sChannel"
+        }
+    },
+    "channelgroupadd": {
+        "command": "channelgroupadd",
+        "params": {
+            "name": {
+                "name": "name",
+                "value": "groupName"
+            },
+            "type": {
+                "name": "type",
+                "value": "groupDbType"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelgroup_create"
+        ],
+        "shortdesc": "create a channel group",
+        "description": "Creates a new channel group using a given name and displays its ID. The optional type parameter can be used to create template groups. For detailed information, see Definitions.",
+        "usage": "channelgroupadd name={groupName} [type={groupDbType}]",
+        "example": {
+            "request": "channelgroupadd name=Channel\\sAdmin",
+            "response": "cgid=13"
+        }
+    },
+    "channelgroupaddperm": {
+        "command": "channelgroupaddperm",
+        "params": {
+            "cgid": {
+                "name": "cgid",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "assign permission to channel group",
+        "description": "Adds a set of specified permissions to a channel group. Multiple permissions can be added by providing the two parameters of each permission. A permission can be specified by permid or permsid.",
+        "usage": "channelgroupaddperm cgid={groupID} [permid={permID}...]",
+        "example": {
+            "request": "channelgroupaddperm cgid=13 permid=17276 permvalue=50|permid=21415 permvalue=20",
+            "response": null
+        }
+    },
+    "channelgroupclientlist": {
+        "command": "channelgroupclientlist",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelgroup_client_list"
+        ],
+        "shortdesc": "find channel groups by client ID",
+        "description": "Displays all the client and\/or channel IDs currently assigned to channel groups. All three parameters are optional so you're free to choose the most suitable combination for your requirements.",
+        "usage": "channelgroupclientlist [cid={channelID}] [cldbid={clientDBID}]",
+        "example": {
+            "request": "channelgroupclientlist cid=2 cgid=9",
+            "response": "cid=2 cldbid=9 cgid=9|cid=2 cldbid=24 cgid=9|cid=2 cldbid=47 cgid=9"
+        }
+    },
+    "channelgroupcopy": {
+        "command": "channelgroupcopy",
+        "params": {
+            "scgid": {
+                "name": "scgid",
+                "value": "sourceGroupID"
+            },
+            "tsgid": {
+                "name": "tsgid",
+                "value": "targetGroupID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelgroup_create",
+            "i_group_modify_power",
+            "i_group_needed_modify_power"
+        ],
+        "shortdesc": "copy a channel group",
+        "description": "Creates a copy of the channel group specified with scgid. If tcgid is set to 0, the server will create a new group. To overwrite an existing group, simply set tcgid to the ID of a designated target group. If a target group is set, the name parameter will be ignored. The type parameter can be used to create template groups. For detailed information, see Definitions.",
+        "usage": "channelgroupcopy scgid={sourceGroupID} tsgid={targetGroupID}",
+        "example": {
+            "request": "channelgroupcopy scgid=4 tcgid=0 name=My\\sGroup\\s(Copy) type=1",
+            "response": "cgid=33"
+        }
+    },
+    "channelgroupdel": {
+        "command": "channelgroupdel",
+        "params": {
+            "cgid": {
+                "name": "cgid",
+                "value": "groupID"
+            },
+            "force": {
+                "name": "force",
+                "value": "1|0"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelgroup_delete"
+        ],
+        "shortdesc": "delete a channel group",
+        "description": "Deletes a channel group by ID. If force is set to 1, the channel group will be deleted even if there are clients within.",
+        "usage": "channelgroupdel cgid={groupID} force={1|0}",
+        "example": {
+            "request": "channelgroupdel cgid=13",
+            "response": null
+        }
+    },
+    "channelgroupdelperm": {
+        "command": "channelgroupdelperm",
+        "params": {
+            "cgid": {
+                "name": "cgid",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "remove permission from channel group",
+        "description": "Removes a set of specified permissions from the channel group. Multiple permissions can be removed at once. A permission can be specified by permid or permsid.",
+        "usage": "channelgroupdelperm cgid={groupID} [permid={permID}...]",
+        "example": {
+            "request": "channelgroupdelperm cgid=16 permid=17276|permid=21415",
+            "response": null
+        }
+    },
+    "channelgrouplist": {
+        "command": "channelgrouplist",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_channelgroup_list",
+            "b_serverinstance_modify_templates"
+        ],
+        "shortdesc": "list channel groups",
+        "description": "Displays a list of channel groups available on the selected virtual server.",
+        "usage": "channelgrouplist",
+        "example": {
+            "request": "channelgrouplist",
+            "response": "cgid=1 name=Channel\\sAdmin type=2 iconid=100 savedb=1|cgid=2 ..."
+        }
+    },
+    "channelgrouppermlist": {
+        "command": "channelgrouppermlist",
+        "params": {
+            "cgid": {
+                "name": "cgid",
+                "value": "groupID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channelgroup_permission_list"
+        ],
+        "shortdesc": "list channel group permissions",
+        "description": "Displays a list of permissions assigned to the channel group specified with cgid. If the -permsid option is specified, the output will contain the permission names instead of the internal IDs.",
+        "usage": "channelgrouppermlist cgid={groupID} [-permsid]",
+        "example": {
+            "request": "channelgrouppermlist cgid=13",
+            "response": "permid=8470 permvalue=1 permnegated=0 permskip=0|permid=8475 permvalue=1 ..."
+        }
+    },
+    "channelgrouprename": {
+        "command": "channelgrouprename",
+        "params": {
+            "cgid": {
+                "name": "cgid",
+                "value": "groupID"
+            },
+            "name": {
+                "name": "name",
+                "value": "groupName"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power"
+        ],
+        "shortdesc": "rename a channel group",
+        "description": "Changes the name of a specified channel group.",
+        "usage": "channelgrouprename cgid={groupID} name={groupName}",
+        "example": {
+            "request": "channelgrouprename cgid=13 name=New\\sName",
+            "response": null
+        }
+    },
+    "channelinfo": {
+        "command": "channelinfo",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            }
+        },
+        "permissions": [
+            "b_channel_info_view"
+        ],
+        "shortdesc": "display channel properties",
+        "description": "Displays detailed configuration information about a channel including ID, topic, description, etc. For detailed information, see Channel Properties.",
+        "usage": "channelinfo cid={channelID}",
+        "example": {
+            "request": "channelinfo cid=1",
+            "response": "channel_name=Default\\sChannel channel_topic=Default\\sChannel\\shas\\sno\\s[b]topic[\\\/b] channel_description=This\\sis\\sthe\\sdefault\\schannel ..."
+        }
+    },
+    "channellist": {
+        "command": "channellist",
+        "params": {
+            "topic": {
+                "name": "topic",
+                "value": null
+            },
+            "flags": {
+                "name": "flags",
+                "value": null
+            },
+            "voice": {
+                "name": "voice",
+                "value": null
+            },
+            "limits": {
+                "name": "limits",
+                "value": null
+            },
+            "icon": {
+                "name": "icon",
+                "value": null
+            },
+            "secondsempty": {
+                "name": "secondsempty",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channel_list"
+        ],
+        "shortdesc": "list channels on a virtual server",
+        "description": "Displays a list of channels created on a virtual server including their ID, order, name, etc. The output can be modified using several command options.",
+        "usage": "channellist [-topic] [-flags] [-voice] [-limits] [-icon] [-secondsempty]",
+        "example": {
+            "request": "channellist -topic",
+            "response": "cid=15 pid=0 channel_order=0 channel_name=Default\\sChannel channel_topic=Default\\sChannel\\shas\\sno\\s[b]topic[\\\/b] total_clients=2|cid=16 ..."
+        }
+    },
+    "channelmove": {
+        "command": "channelmove",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpid": {
+                "name": "cpid",
+                "value": "channelParentID"
+            }
+        },
+        "permissions": [
+            "i_channel_min_depth",
+            "i_channel_max_depth",
+            "b_channel_modify_parent",
+            "b_channel_modify_sortorder"
+        ],
+        "shortdesc": "move channel to new parent",
+        "description": "Moves a channel to a new parent channel with the ID cpid. If order is specified, the channel will be sorted right under the channel with the specified ID. If order is set to 0, the channel will be sorted right below the new parent.",
+        "usage": "channelmove cid={channelID} cpid={channelParentID}",
+        "example": {
+            "request": "channelmove cid=16 cpid=1 order=0",
+            "response": null
+        }
+    },
+    "channelpermlist": {
+        "command": "channelpermlist",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_channel_permission_list"
+        ],
+        "shortdesc": "list channel specific permissions",
+        "description": "Displays a list of permissions defined for a channel.",
+        "usage": "channelpermlist cid={channelID} [-permsid]",
+        "example": {
+            "request": "channelpermlist cid=2",
+            "response": "cid=2 permid=4353 permvalue=1 permnegated=0 permskip=0|permid=17276 permvalue=50 ..."
+        }
+    },
+    "clientaddperm": {
+        "command": "clientaddperm",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "assign permission to client",
+        "description": "Adds a set of specified permissions to a client. Multiple permissions can be added by providing the three parameters of each permission. A permission can be specified by permid or permsid.",
+        "usage": "clientaddperm cldbid={clientDBID} [permid={permID}...]",
+        "example": {
+            "request": "clientaddperm cldbid=16 permid=17276 permvalue=50 permskip=1|permid=21415 permvalue=20 permskip=0",
+            "response": null
+        }
+    },
+    "clientdbdelete": {
+        "command": "clientdbdelete",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "b_client_delete_dbproperties"
+        ],
+        "shortdesc": "delete client database properties",
+        "description": "Deletes a clients properties from the database.",
+        "usage": "clientdbdelete cldbid={clientDBID}",
+        "example": {
+            "request": "clientdbdelete cldbid=56",
+            "response": null
+        }
+    },
+    "clientdbedit": {
+        "command": "clientdbedit",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "client_properties": {
+                "name": "client_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_client_modify_dbproperties",
+            "b_client_modify_description",
+            "b_client_set_talk_power"
+        ],
+        "shortdesc": "change client database properties",
+        "description": "Changes a clients settings using given properties. For detailed information, see Client Properties.",
+        "usage": "clientdbedit cldbid={clientDBID} [client_properties...]",
+        "example": {
+            "request": "clientdbedit cldbid=56 client_description=Best\\sguy\\sever!",
+            "response": null
+        }
+    },
+    "clientdbfind": {
+        "command": "clientdbfind",
+        "params": {
+            "pattern": {
+                "name": "pattern",
+                "value": "clientName|clientUID"
+            },
+            "uid": {
+                "name": "uid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_dbsearch"
+        ],
+        "shortdesc": "find client database ID by nickname or UID",
+        "description": "Displays a list of client database IDs matching a given pattern. You can either search for a clients last known nickname or his unique identity by using the -uid option. The pattern parameter can include regular characters and SQL wildcard characters (e.g. %).",
+        "usage": "clientdbfind pattern={clientName|clientUID} [-uid]",
+        "example": {
+            "request": "clientdbfind pattern=%Sven%",
+            "response": "cldbid=56"
+        }
+    },
+    "clientdbinfo": {
+        "command": "clientdbinfo",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_dbinfo"
+        ],
+        "shortdesc": "display client database properties",
+        "description": "Displays detailed database information about a client including unique ID, creation date, etc.",
+        "usage": "clientdbinfo cldbid={clientDBID}",
+        "example": {
+            "request": "clientdbinfo cldbid=4",
+            "response": "client_unique_identifier=FPMPSC6MXqXq751dX7BKV0JniSo= client_nickname=ScP client_created=1265411019 ..."
+        }
+    },
+    "clientdblist": {
+        "command": "clientdblist",
+        "params": {
+            "start": {
+                "name": "start",
+                "value": "offset"
+            },
+            "duration": {
+                "name": "duration",
+                "value": "limit"
+            },
+            "count": {
+                "name": "count",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_dblist"
+        ],
+        "shortdesc": "list known client UIDs",
+        "description": "Displays a list of client identities known by the server including their database ID, last nickname, etc.",
+        "usage": "clientdblist [start={offset}] [duration={limit}] [-count]",
+        "example": {
+            "request": "clientdblist",
+            "response": "cldbid=7 client_unique_identifier=DZhdQU58qyooEK4Fr8Ly738hEmc= client_nickname=MuhChy client_created=1259147468 client_lastconnected=1259421233 ..."
+        }
+    },
+    "clientdelperm": {
+        "command": "clientdelperm",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "remove permission from client",
+        "description": "Removes a set of specified permissions from a client. Multiple permissions can be removed at once. A permission can be specified by permid or permsid.",
+        "usage": "channeldelperm cldbid={clientDBID} [permid={permID}...]",
+        "example": {
+            "request": "clientdelperm cldbid=16 permid=17276|permid=21415",
+            "response": null
+        }
+    },
+    "clientedit": {
+        "command": "clientedit",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            },
+            "client_properties": {
+                "name": "client_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_client_modify_description",
+            "b_client_set_talk_power"
+        ],
+        "shortdesc": "change client properties",
+        "description": "Changes a clients settings using given properties. For detailed information, see Client Properties.",
+        "usage": "clientedit clid={clientID} [client_properties...]",
+        "example": {
+            "request": "clientedit clid=10 client_description=Best\\sguy\\sever!",
+            "response": null
+        }
+    },
+    "clientfind": {
+        "command": "clientfind",
+        "params": {
+            "pattern": {
+                "name": "pattern",
+                "value": "clientName"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_search"
+        ],
+        "shortdesc": "find client by nickname",
+        "description": "Displays a list of clients matching a given name pattern.",
+        "usage": "clientfind pattern={clientName}",
+        "example": {
+            "request": "clientfind pattern=sven",
+            "response": "clid=7 client_nickname=Sven"
+        }
+    },
+    "clientgetdbidfromuid": {
+        "command": "clientgetdbidfromuid",
+        "params": {
+            "cluid": {
+                "name": "cluid",
+                "value": "clientUID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "find client database ID by UID",
+        "description": "Displays the database ID matching the unique identifier specified by cluid.",
+        "usage": "clientgetdbidfromuid cluid={clientUID}",
+        "example": {
+            "request": "clientgetdbidfromuid cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM=",
+            "response": "cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM= cldbid=32"
+        }
+    },
+    "clientgetids": {
+        "command": "clientgetids",
+        "params": {
+            "cluid": {
+                "name": "cluid",
+                "value": "clientUID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "find client IDs by UID",
+        "description": "Displays all client IDs matching the unique identifier specified by cluid.",
+        "usage": "clientgetids cluid={clientUID}",
+        "example": {
+            "request": "clientgetids cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM=",
+            "response": "cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM= clid=1 name=Janko"
+        }
+    },
+    "clientgetnamefromdbid": {
+        "command": "clientgetnamefromdbid",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "find client nickname by database ID",
+        "description": "Displays the unique identifier and nickname matching the database ID specified by cldbid.",
+        "usage": "clientgetnamefromdbid cldbid={clientDBID}",
+        "example": {
+            "request": "clientgetnamefromdbid cldbid=32",
+            "response": "cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM= cldbid=32 name=Janko"
+        }
+    },
+    "clientgetnamefromuid": {
+        "command": "clientgetnamefromuid",
+        "params": {
+            "cluid": {
+                "name": "cluid",
+                "value": "clientUID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "find client nickname by UID",
+        "description": "Displays the database ID and nickname matching the unique identifier specified by cluid.",
+        "usage": "clientgetnamefromuid cluid={clientUID}",
+        "example": {
+            "request": "clientgetnamefromuid cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM=",
+            "response": "cluid=dyjxkshZP6bz0n3bnwFQ1CkwZOM= cldbid=32 name=Janko"
+        }
+    },
+    "clientgetuidfromclid": {
+        "command": "clientgetuidfromclid",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "find client UID by client ID",
+        "description": "Displays the unique identifier matching the clientID specified by clid.",
+        "usage": "clientgetuidfromclid clid={clientID}",
+        "example": {
+            "request": "clientgetuidfromclid clid=8",
+            "response": "clid=8 cluid=yXM6PUfbCcPU+joxIFek1xOQwwQ= nickname=MuhChy1"
+        }
+    },
+    "clientinfo": {
+        "command": "clientinfo",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            }
+        },
+        "permissions": [
+            "b_client_info_view"
+        ],
+        "shortdesc": "display client properties",
+        "description": "Displays detailed configuration information about a client including unique ID, nickname, client version, etc.",
+        "usage": "clientinfo clid={clientID}",
+        "example": {
+            "request": "clientinfo clid=6",
+            "response": "client_unique_identifier=P5H2hrN6+gpQI4n\\\/dXp3p17vtY0= client_nickname=Rabe85 client_version=3.0.0-alpha24\\s[Build:\\s8785]\\s(UI:\\s8785) ..."
+        }
+    },
+    "clientkick": {
+        "command": "clientkick",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            },
+            "reasonid": {
+                "name": "reasonid",
+                "value": "4|5"
+            },
+            "reasonmsg": {
+                "name": "reasonmsg",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "i_client_kick_from_server_power",
+            "i_client_kick_from_channel_power",
+            "i_client_needed_kick_from_server_power",
+            "i_client_needed_kick_from_channel_power"
+        ],
+        "shortdesc": "kick a client",
+        "description": "Kicks one or more clients specified with clid from their currently joined channel or from the server, depending on reasonid. The reasonmsg parameter specifies a text message sent to the kicked clients. This parameter is optional and may only have a maximum of 40 characters. For detailed information, see Definitions.",
+        "usage": "clientkick clid={clientID}... reasonid={4|5} [reasonmsg={text}]",
+        "example": {
+            "request": "clientkick clid=5|clid=6 reasonid=4 reasonmsg=Go\\saway!",
+            "response": null
+        }
+    },
+    "clientlist": {
+        "command": "clientlist",
+        "params": {
+            "uid": {
+                "name": "uid",
+                "value": null
+            },
+            "away": {
+                "name": "away",
+                "value": null
+            },
+            "voice": {
+                "name": "voice",
+                "value": null
+            },
+            "times": {
+                "name": "times",
+                "value": null
+            },
+            "groups": {
+                "name": "groups",
+                "value": null
+            },
+            "info": {
+                "name": "info",
+                "value": null
+            },
+            "country": {
+                "name": "country",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_list",
+            "i_channel_subscribe_power",
+            "i_channel_needed_subscribe_power"
+        ],
+        "shortdesc": "list clients online on a virtual server",
+        "description": "Displays a list of clients online on a virtual server including their ID, nickname, status flags, etc. The output can be modified using several command options. Please note that the output will only contain clients which are currently in channels you're able to subscribe to.",
+        "usage": "clientlist [-uid] [-away] [-voice] [-times] [-groups] [-info] [-country]",
+        "example": {
+            "request": "clientlist -away",
+            "response": "clid=5 cid=7 client_database_id=40 client_nickname=ScP client_type=0 client_away=1 client_away_message=not\\shere|clid=6 ..."
+        }
+    },
+    "clientmove": {
+        "command": "clientmove",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            },
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            }
+        },
+        "permissions": [
+            "i_client_move_power",
+            "i_client_needed_move_power"
+        ],
+        "shortdesc": "move a client",
+        "description": "Moves one or more clients specified with clid to the channel with ID cid. If the target channel has a password, it needs to be specified with cpw. If the channel has no password, the parameter can be omitted.",
+        "usage": "clientmove clid={clientID}... cid={channelID} [cpw={channelPassword}]",
+        "example": {
+            "request": "clientmove clid=5|clid=6 cid=3",
+            "response": null
+        }
+    },
+    "clientpermlist": {
+        "command": "clientpermlist",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_client_permission_list"
+        ],
+        "shortdesc": "list client specific permissions",
+        "description": "Displays a list of permissions defined for a client.",
+        "usage": "clientpermlist cldbid={clientDBID} [-permsid]",
+        "example": {
+            "request": "clientpermlist cldbid=2",
+            "response": "cldbid=2 permid=4353 permvalue=1 permnegated=0 permskip=0|permid=17276 permvalue=50 permnegated=0 permskip=0|permid=21415 ..."
+        }
+    },
+    "clientpoke": {
+        "command": "clientpoke",
+        "params": {
+            "clid": {
+                "name": "clid",
+                "value": "clientID"
+            },
+            "msg": {
+                "name": "msg",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "i_client_poke_power",
+            "i_client_needed_poke_power"
+        ],
+        "shortdesc": "poke a client",
+        "description": "Sends a poke message to the client specified with clid.",
+        "usage": "clientpoke clid={clientID} msg={text}",
+        "example": {
+            "request": "clientpoke clid=5 msg=Wake\\sup!",
+            "response": null
+        }
+    },
+    "clientsetserverquerylogin": {
+        "command": "clientsetserverquerylogin",
+        "params": {
+            "client_login_name": {
+                "name": "client_login_name",
+                "value": "username"
+            }
+        },
+        "permissions": [
+            "b_client_create_modify_serverquery_login"
+        ],
+        "shortdesc": "set own login credentials",
+        "description": "Updates your own ServerQuery login credentials using a specified username. The password will be auto-generated.",
+        "usage": "clientsetserverquerylogin client_login_name={username}",
+        "example": {
+            "request": "clientsetserverquerylogin client_login_name=admin",
+            "response": "client_login_password=+r\\\/TQqvR"
+        }
+    },
+    "clientupdate": {
+        "command": "clientupdate",
+        "params": {
+            "client_properties": {
+                "name": "client_properties",
+                "value": null
+            }
+        },
+        "permissions": [],
+        "shortdesc": "set own properties",
+        "description": "Change your ServerQuery clients settings using given properties. For detailed information, see Client Properties.",
+        "usage": "clientupdate [client_properties...]",
+        "example": {
+            "request": "clientupdate client_nickname=ScP\\s(query)",
+            "response": null
+        }
+    },
+    "complainadd": {
+        "command": "complainadd",
+        "params": {
+            "tcldbid": {
+                "name": "tcldbid",
+                "value": "targetClientDBID"
+            },
+            "message": {
+                "name": "message",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "i_client_complain_power",
+            "i_client_needed_complain_power"
+        ],
+        "shortdesc": "create a client complaint",
+        "description": "Submits a complaint about a connected client with database ID tcldbid to the server.",
+        "usage": "complainadd tcldbid={targetClientDBID} message={text}",
+        "example": {
+            "request": "complainadd tcldbid=3 message=Bad\\sguy!",
+            "response": null
+        }
+    },
+    "complaindel": {
+        "command": "complaindel",
+        "params": {
+            "tcldbid": {
+                "name": "tcldbid",
+                "value": "targetClientDBID"
+            },
+            "fcldbid": {
+                "name": "fcldbid",
+                "value": "fromClientDBID"
+            }
+        },
+        "permissions": [
+            "b_client_complain_delete",
+            "b_client_complain_delete_own"
+        ],
+        "shortdesc": "delete a client complaint",
+        "description": "Deletes the complaint about the client with ID tcldbid submitted by the client with ID fcldbid from the server.",
+        "usage": "complaindel tcldbid={targetClientDBID} fcldbid={fromClientDBID}",
+        "example": {
+            "request": "complaindel tcldbid=3 fcldbid=4",
+            "response": null
+        }
+    },
+    "complaindelall": {
+        "command": "complaindelall",
+        "params": {
+            "tcldbid": {
+                "name": "tcldbid",
+                "value": "targetClientDBID"
+            }
+        },
+        "permissions": [
+            "b_client_complain_delete"
+        ],
+        "shortdesc": "delete all client complaints",
+        "description": "Deletes all complaints about the client with database ID tcldbid from the server.",
+        "usage": "complaindelall tcldbid={targetClientDBID}",
+        "example": {
+            "request": "complaindelall tcldbid=3",
+            "response": null
+        }
+    },
+    "complainlist": {
+        "command": "complainlist",
+        "params": {
+            "tcldbid": {
+                "name": "tcldbid",
+                "value": "targetClientDBID"
+            }
+        },
+        "permissions": [
+            "b_client_complain_list"
+        ],
+        "shortdesc": "list client complaints on a virtual server",
+        "description": "Displays a list of complaints on the selected virtual server. If tcldbid is specified, only complaints about the targeted client will be shown.",
+        "usage": "complainlist [tcldbid={targetClientDBID}]",
+        "example": {
+            "request": "complainlist tcldbid=3",
+            "response": "tcldbid=3 tname=Julian fcldbid=56 fname=Sven message=Bad\\sguy! timestamp=1259440948 ..."
+        }
+    },
+    "custominfo": {
+        "command": "custominfo",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "display custom client properties",
+        "description": "Displays a list of custom properties for the client specified with cldbid.",
+        "usage": "custominfo cldbid={clientDBID}",
+        "example": {
+            "request": "custominfo cldbid=3",
+            "response": "cldbid=3 ident=forum_account value=ScP|ident=forum_id value=123"
+        }
+    },
+    "customsearch": {
+        "command": "customsearch",
+        "params": {
+            "ident": {
+                "name": "ident",
+                "value": "ident"
+            },
+            "pattern": {
+                "name": "pattern",
+                "value": "pattern"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "search for custom client properties",
+        "description": "Searches for custom client properties specified by ident and value. The value parameter can include regular characters and SQL wildcard characters (e.g. %).",
+        "usage": "customsearch ident={ident} pattern={pattern}",
+        "example": {
+            "request": "customsearch ident=forum_account pattern=%ScP%",
+            "response": "cldbid=2 ident=forum_account value=ScP"
+        }
+    },
+    "ftcreatedir": {
+        "command": "ftcreatedir",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            },
+            "dirname": {
+                "name": "dirname",
+                "value": "dirPath"
+            }
+        },
+        "permissions": [
+            "i_ft_directory_create_power",
+            "i_ft_needed_file_directory_create_power"
+        ],
+        "shortdesc": "create a directory",
+        "description": "Creates new directory in a channels file repository.",
+        "usage": "ftcreatedir cid={channelID} cpw={channelPassword} dirname={dirPath}",
+        "example": {
+            "request": "ftcreatedir cid=2 cpw= dirname=\\\/My\\sDirectory",
+            "response": null
+        }
+    },
+    "ftdeletefile": {
+        "command": "ftdeletefile",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            },
+            "name": {
+                "name": "name",
+                "value": "filePath"
+            }
+        },
+        "permissions": [
+            "i_ft_file_delete_power",
+            "i_ft_needed_file_delete_power"
+        ],
+        "shortdesc": "delete a file",
+        "description": "Deletes one or more files stored in a channels file repository.",
+        "usage": "ftdeletefile cid={channelID} cpw={channelPassword} name={filePath}...",
+        "example": {
+            "request": "ftdeletefile cid=2 cpw= name=\\\/Pic1.PNG|name=\\\/Pic2.PNG",
+            "response": null
+        }
+    },
+    "ftgetfileinfo": {
+        "command": "ftgetfileinfo",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            },
+            "name": {
+                "name": "name",
+                "value": "filePath"
+            }
+        },
+        "permissions": [
+            "i_ft_file_browse_power",
+            "i_ft_needed_file_browse_power"
+        ],
+        "shortdesc": "display details about a file",
+        "description": "Displays detailed information about one or more specified files stored in a channels file repository.",
+        "usage": "ftgetfileinfo cid={channelID} cpw={channelPassword} name={filePath}...",
+        "example": {
+            "request": "ftgetfileinfo cid=2 cpw= path=\\\/Pic1.PNG|cid=2 cpw= path=\\\/Pic2.PNG",
+            "response": "cid=2 path=\\\/ name=Stuff size=0 datetime=1259415210 type=0|name=Pic1.PNG size=563783 datetime=1259425462 type=1|name=Pic2.PNG ..."
+        }
+    },
+    "ftgetfilelist": {
+        "command": "ftgetfilelist",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            },
+            "path": {
+                "name": "path",
+                "value": "filePath"
+            }
+        },
+        "permissions": [
+            "i_ft_file_browse_power",
+            "i_ft_needed_file_browse_power"
+        ],
+        "shortdesc": "list files stored in a channel filebase",
+        "description": "Displays a list of files and directories stored in the specified channels file repository.",
+        "usage": "ftgetfilelist cid={channelID} cpw={channelPassword} path={filePath}",
+        "example": {
+            "request": "ftgetfilelist cid=2 cpw= path=\\\/",
+            "response": "cid=2 path=\\\/ name=Stuff size=0 datetime=1259415210 type=0|name=Pic1.PNG size=563783 datetime=1259425462 type=1|name=Pic2.PNG ..."
+        }
+    },
+    "ftinitdownload": {
+        "command": "ftinitdownload",
+        "params": {
+            "clientftfid": {
+                "name": "clientftfid",
+                "value": "clientFileTransferID"
+            },
+            "name": {
+                "name": "name",
+                "value": "filePath"
+            }
+        },
+        "permissions": [
+            "i_ft_file_download_power",
+            "i_ft_needed_file_",
+            "download",
+            "_power",
+            "i_ft_quota_mb_",
+            "download",
+            "_per_client"
+        ],
+        "shortdesc": "init a file download",
+        "description": "Initializes a file transfer download. clientftfid is an arbitrary ID to identify the file transfer on client-side. On success, the server generates a new ftkey which is required to start downloading the file through TeamSpeak 3's file transfer interface. Since version 3.0.13 there is an optional proto parameter. The client can request a protocol version with it. Currently only 0 and 1 are supported which only differ in the way they handle some timings. The server will reply which protocol version it will support. The server will reply with an ip parameter if it determines the filetransfer subsystem is not reachable by the ip that is currently being used for the query connection.",
+        "usage": "ftinitdownload clientftfid={clientFileTransferID} name={filePath}",
+        "example": {
+            "request": "ftinitdownload clientftfid=1 name=\\\/image.iso cid=5 cpw= seekpos=0",
+            "response": "clientftfid=1 serverftfid=7 ftkey=NrOga\\\/4d2GpYC5oKgxuclTO37X83ca\\\/1 port=30033 size=673460224 proto=0"
+        }
+    },
+    "ftinitupload": {
+        "command": "ftinitupload",
+        "params": {
+            "clientftfid": {
+                "name": "clientftfid",
+                "value": "clientFileTransferID"
+            },
+            "name": {
+                "name": "name",
+                "value": "filePath"
+            }
+        },
+        "permissions": [
+            "i_ft_file_upload_power",
+            "i_ft_needed_file_",
+            "upload",
+            "_power",
+            "i_ft_quota_mb_upload_per_client"
+        ],
+        "shortdesc": "init a file upload",
+        "description": "Initializes a file transfer upload. clientftfid is an arbitrary ID to identify the file transfer on client-side. On success, the server generates a new ftkey which is required to start uploading the file through TeamSpeak 3's file transfer interface. Since version 3.0.13 there is an optional proto parameter. The client can request a protocol version with it. Currently only 0 and 1 are supported which only differ in the way they handle some timings. The server will reply which protocol version it will support. The server will reply with an ip parameter if it determines the filetransfer subsystem is not reachable by the ip that is currently being used for the query connection.",
+        "usage": "ftinitupload clientftfid={clientFileTransferID} name={filePath}",
+        "example": {
+            "request": "ftinitupload clientftfid=1 name=\\\/image.iso cid=5 cpw= size=673460224 overwrite=1 resume=0",
+            "response": "clientftfid=1 serverftfid=6 ftkey=itRNdsIOvcBiBg\\\/Xj4Ge51ZSrsShHuid port=30033 seekpos=0 proto=0"
+        }
+    },
+    "ftlist": {
+        "command": "ftlist",
+        "params": [],
+        "permissions": [
+            "b_ft_transfer_list"
+        ],
+        "shortdesc": "list active file transfers",
+        "description": "Displays a list of running file transfers on the selected virtual server. The output contains the path to which a file is uploaded to, the current transfer rate in bytes per second, etc.",
+        "usage": "ftlist",
+        "example": {
+            "request": "ftlist",
+            "response": "clid=2 path=files\\\/virtualserver_1\\\/channel_5 name=image.iso size=673460224 sizedone=450756 clientftfid=2 serverftfid=6 sender=0 status=1 current_speed=60872.8 ..."
+        }
+    },
+    "ftrenamefile": {
+        "command": "ftrenamefile",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cpw": {
+                "name": "cpw",
+                "value": "channelPassword"
+            }
+        },
+        "permissions": [
+            "i_ft_file_rename_power",
+            "i_ft_needed_file_rename_power"
+        ],
+        "shortdesc": "rename a file",
+        "description": "Renames a file in a channels file repository. If the two parameters tcid and tcpw are specified, the file will be moved into another channels file repository.",
+        "usage": "ftrenamefile cid={channelID} cpw={channelPassword}",
+        "example": {
+            "request": "ftrenamefile cid=2 cpw= tcid=3 tcpw=secret oldname=\\\/Pic3.PNG newname=\\\/Pic3.PNG",
+            "response": null
+        }
+    },
+    "ftstop": {
+        "command": "ftstop",
+        "params": {
+            "serverftfid": {
+                "name": "serverftfid",
+                "value": "serverFileTransferID"
+            },
+            "delete": {
+                "name": "delete",
+                "value": "1|0"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "stop a file transfer",
+        "description": "Stops the running file transfer with server-side ID serverftfid.",
+        "usage": "ftstop serverftfid={serverFileTransferID} delete={1|0}",
+        "example": {
+            "request": "ftstop serverftfid=2 delete=1",
+            "response": null
+        }
+    },
+    "gm": {
+        "command": "gm",
+        "params": {
+            "msg": {
+                "name": "msg",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_textmessage_send"
+        ],
+        "shortdesc": "send global text message",
+        "description": "Sends a text message to all clients on all virtual servers in the TeamSpeak 3 Server instance.",
+        "usage": "gm msg={text}",
+        "example": {
+            "request": "gm msg=Hello\\sWorld!",
+            "response": null
+        }
+    },
+    "hostinfo": {
+        "command": "hostinfo",
+        "params": [],
+        "permissions": [
+            "b_serverinstance_info_view"
+        ],
+        "shortdesc": "display server instance connection info",
+        "description": "Displays detailed connection information about the server instance including uptime, number of virtual servers online, traffic information, etc. For detailed information, see Server Instance Properties.",
+        "usage": "hostinfo",
+        "example": {
+            "request": "hostinfo",
+            "response": "instance_uptime=1903203 host_timestamp_utc=1259337246 virtualservers_running_total=1 connection_filetransfer_bandwidth_sent=0 ..."
+        }
+    },
+    "instanceedit": {
+        "command": "instanceedit",
+        "params": {
+            "instance_properties": {
+                "name": "instance_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_serverinstance_modify_settings"
+        ],
+        "shortdesc": "change server instance properties",
+        "description": "Changes the server instance configuration using given properties. For detailed information, see Server Instance Properties.",
+        "usage": "instanceedit [instance_properties...]",
+        "example": {
+            "request": "instanceedit serverinstance_filetransfer_port=1337",
+            "response": null
+        }
+    },
+    "instanceinfo": {
+        "command": "instanceinfo",
+        "params": [],
+        "permissions": [
+            "b_serverinstance_info_view"
+        ],
+        "shortdesc": "display server instance properties",
+        "description": "Displays the server instance configuration including database revision number, the file transfer port, default group IDs, etc. For detailed information, see Server Instance Properties.",
+        "usage": "instanceinfo",
+        "example": {
+            "request": "instanceinfo",
+            "response": "serverinstance_database_version=11 serverinstance_filetransfer_port=30033 serverinstance_template_guest_serverquery_group=1 serverinstance_template_serveradmin_group=3 ..."
+        }
+    },
+    "logadd": {
+        "command": "logadd",
+        "params": {
+            "loglevel": {
+                "name": "loglevel",
+                "value": "1-4"
+            },
+            "logmsg": {
+                "name": "logmsg",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_log_add",
+            "b_virtualserver_log_add"
+        ],
+        "shortdesc": "add custom entry to log",
+        "description": "Writes a custom entry into the servers log. Depending on your permissions, you'll be able to add entries into the server instance log and\/or your virtual servers log. The loglevel parameter specifies the type of the entry. For detailed information, see Definitions.",
+        "usage": "logadd loglevel={1-4} logmsg={text}",
+        "example": {
+            "request": "logadd loglevel=4 logmsg=Informational\\smessage!",
+            "response": null
+        }
+    },
+    "login": {
+        "command": "login",
+        "params": {
+            "client_login_name": {
+                "name": "client_login_name",
+                "value": "username"
+            },
+            "client_login_password": {
+                "name": "client_login_password",
+                "value": "password"
+            }
+        },
+        "permissions": [
+            "b_serverquery_login"
+        ],
+        "shortdesc": "authenticate with the server",
+        "description": "Authenticates with the TeamSpeak 3 Server instance using given ServerQuery login credentials.",
+        "usage": "login client_login_name={username} client_login_password={password}",
+        "example": {
+            "request": "login client_login_name=xyz client_login_password=xyz",
+            "response": null
+        }
+    },
+    "logout": {
+        "command": "logout",
+        "params": [],
+        "permissions": [
+            "b_serverquery_login"
+        ],
+        "shortdesc": "deselect virtual server and log out",
+        "description": "Deselects the active virtual server and logs out from the server instance.",
+        "usage": "logout",
+        "example": {
+            "request": "logout",
+            "response": null
+        }
+    },
+    "logview": {
+        "command": "logview",
+        "params": {
+            "lines": {
+                "name": "lines",
+                "value": "1-100"
+            },
+            "reverse": {
+                "name": "reverse",
+                "value": "1|0"
+            },
+            "instance": {
+                "name": "instance",
+                "value": "1|0"
+            },
+            "begin_pos": {
+                "name": "begin_pos",
+                "value": "n"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_log_view",
+            "b_virtualserver_log_view"
+        ],
+        "shortdesc": "list recent log entries",
+        "description": "Displays a specified number of entries from the servers log. If instance is set to 1, the server will return lines from the master logfile (ts3server_0.log) instead of the selected virtual server logfile.",
+        "usage": "logview [lines={1-100}] [reverse={1|0}] [instance={1|0}] [begin_pos={n}]",
+        "example": {
+            "request": "logview lines=30",
+            "response": "last_pos=403788 file_size=411980 l=\\p\\slistening\\son\\s0.0.0.0:9987 ..."
+        }
+    },
+    "messageadd": {
+        "command": "messageadd",
+        "params": {
+            "cluid": {
+                "name": "cluid",
+                "value": "clientUID"
+            },
+            "subject": {
+                "name": "subject",
+                "value": "subject"
+            },
+            "message": {
+                "name": "message",
+                "value": "text"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "send an offline message",
+        "description": "Sends an offline message to the client specified by cluid.",
+        "usage": "messageadd cluid={clientUID} subject={subject} message={text}",
+        "example": {
+            "request": "messageadd cluid=oHhi9WzXLNEFQOwAu4JYKGU+C+c= subject=Hi! message=Where\\sare\\syou?!?",
+            "response": null
+        }
+    },
+    "messagedel": {
+        "command": "messagedel",
+        "params": {
+            "msgid": {
+                "name": "msgid",
+                "value": "messageID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "delete an offline message from your inbox",
+        "description": "Deletes an existing offline message with ID msgid from your inbox.",
+        "usage": "messagedel msgid={messageID}",
+        "example": {
+            "request": "messagedel msgid=4",
+            "response": null
+        }
+    },
+    "messageget": {
+        "command": "messageget",
+        "params": {
+            "msgid": {
+                "name": "msgid",
+                "value": "messageID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "display an offline message from your inbox",
+        "description": "Displays an existing offline message with ID msgid from your inbox. Please note that this does not automatically set the flag_read property of the message.",
+        "usage": "messageget msgid={messageID}",
+        "example": {
+            "request": "messageget msgid=4",
+            "response": "msgid=4 cluid=xwEzb5ENOaglVHu9oelK++reUyE= subject=Hi! message=Where\\sare\\syou?!?"
+        }
+    },
+    "messagelist": {
+        "command": "messagelist",
+        "params": [],
+        "permissions": [],
+        "shortdesc": "list offline messages from your inbox",
+        "description": "Displays a list of offline messages you've received. The output contains the senders unique identifier, the messages subject, etc.",
+        "usage": "messagelist",
+        "example": {
+            "request": "messagelist",
+            "response": "msgid=4 cluid=xwEzb5ENOaglVHu9oelK++reUyE= subject=Test timestamp=1259439465 flag_read=0 ..."
+        }
+    },
+    "messageupdateflag": {
+        "command": "messageupdateflag",
+        "params": {
+            "msgid": {
+                "name": "msgid",
+                "value": "messageID"
+            },
+            "flag": {
+                "name": "flag",
+                "value": "1|0"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "mark an offline message as read",
+        "description": "Updates the flag_read property of the offline message specified with msgid. If flag is set to 1, the message will be marked as read.",
+        "usage": "messageupdateflag msgid={messageID} flag={1|0}",
+        "example": {
+            "request": "messageupdateflag msgid=4 flag=1",
+            "response": null
+        }
+    },
+    "permfind": {
+        "command": "permfind",
+        "params": {
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": "permName"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_permission_find",
+            "b_serverinstance_permission_find"
+        ],
+        "shortdesc": "find permission assignments by ID",
+        "description": "Displays detailed information about all assignments of the permission specified with permid. The output is similar to permoverview which includes the type and the ID of the client, channel or group associated with the permission. A permission can be specified by permid or permsid.",
+        "usage": "permfind [permid={permID}...] [permsid={permName}...]",
+        "example": {
+            "request": "permfind permid=4353",
+            "response": "t=0 id1=1 id2=0 p=4353|t=0 id1=2 id2=0 p=4353"
+        }
+    },
+    "permget": {
+        "command": "permget",
+        "params": {
+            "permid": {
+                "name": "permid",
+                "value": "permID}|permid"
+            }
+        },
+        "permissions": [
+            "b_client_permissionoverview_own"
+        ],
+        "shortdesc": "display client permission value for yourself",
+        "description": "Displays the current value of the permission specified with permid or permsid for your own connection. This can be useful when you need to check your own privileges.",
+        "usage": "permget permid={permID}|permid={permID}",
+        "example": {
+            "request": "permget permid=21174",
+            "response": "permsid=i_client_move_power permid=21174 permvalue=100"
+        }
+    },
+    "permidgetbyname": {
+        "command": "permidgetbyname",
+        "params": {
+            "permsid": {
+                "name": "permsid",
+                "value": "permName"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_permission_list"
+        ],
+        "shortdesc": "find permission ID by name",
+        "description": "Displays the database ID of one or more permissions specified by permsid.",
+        "usage": "permidgetbyname permsid={permName}...",
+        "example": {
+            "request": "permidgetbyname permsid=b_serverinstance_help_view|permsid=b_serverinstance_info_view",
+            "response": "permsid=b_serverinstance_help_view permid=4353|permsid=b_serverinstance_info_view permid=4355"
+        }
+    },
+    "permissionlist": {
+        "command": "permissionlist",
+        "params": [],
+        "permissions": [
+            "b_serverinstance_permission_list"
+        ],
+        "shortdesc": "list permissions available",
+        "description": "Displays a list of permissions available on the server instance including ID, name and description.",
+        "usage": "permissionlist",
+        "example": {
+            "request": "permissionlist",
+            "response": "permid=21413 permname=b_client_channel_textmessage_send permdesc=Send\\stext\\smessages\\sto\\schannel|permid=21414 permname=i_client_talk_power ..."
+        }
+    },
+    "permoverview": {
+        "command": "permoverview",
+        "params": {
+            "cid": {
+                "name": "cid",
+                "value": "channelID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "b_client_permissionoverview_view"
+        ],
+        "shortdesc": "display client permission overview",
+        "description": "Displays all permissions assigned to a client for the channel specified with cid. If permid is set to 0, all permissions will be displayed. A permission can be specified by permid or permsid.",
+        "usage": "permoverview cid={channelID} cldbid={clientDBID} [permid={permID}...]",
+        "example": {
+            "request": "permoverview cldbid=57 cid=74 permid=0",
+            "response": "t=0 id1=5 id2=0 p=37 v=1 n=0 s=0|t=0 id1=5 id2=0 p=38 v=1 n=0 s=0 ..."
+        }
+    },
+    "permreset": {
+        "command": "permreset",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_permission_reset"
+        ],
+        "shortdesc": "delete all server and channel groups and restore default permissions",
+        "description": "Restores the default permission settings on the selected virtual server and creates a new initial administrator token. Please note that in case of an error during the permreset call - e.g. when the database has been modified or corrupted - the virtual server will be deleted from the database.",
+        "usage": "permreset",
+        "example": {
+            "request": "permreset",
+            "response": "token=eKnFZQ9EK7G7MhtuQB6+N2B1PNZZ6OZL3ycDp2OW"
+        }
+    },
+    "privilegekeyadd": {
+        "command": "privilegekeyadd",
+        "params": {
+            "tokentype": {
+                "name": "tokentype",
+                "value": "1|0"
+            },
+            "tokenid1": {
+                "name": "tokenid1",
+                "value": "groupID"
+            },
+            "tokenid2": {
+                "name": "tokenid2",
+                "value": "channelID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_token_add",
+            "i_group_needed_member_add_power",
+            "i_group_member_add_power"
+        ],
+        "shortdesc": "creates a new privilege key",
+        "description": "Create a new token. If tokentype is set to 0, the ID specified with tokenid1 will be a server group ID. Otherwise, tokenid1 is used as a channel group ID and you need to provide a valid channel ID using tokenid2. The tokencustomset parameter allows you to specify a set of custom client properties. This feature can be used when generating tokens to combine a website account database with a TeamSpeak user. The syntax of the value needs to be escaped using the ServerQuery escape patterns and has to follow the general syntax of: ident=ident1 value=value1|ident=ident2 value=value2|ident=ident3 value=value3",
+        "usage": "privilegekeyadd tokentype={1|0} tokenid1={groupID} tokenid2={channelID}",
+        "example": {
+            "request": "privilegekeyadd tokentype=0 tokenid1=6 tokenid2=0 tokendescription=Test\\stoken\\swith\\scustom\\sset tokencustomset=ident=forum_user\\svalue=Sven\\sPaulsen\\pident=forum_id\\svalue=123",
+            "response": "token=eKnFZQ9EK7G7MhtuQB6+N2B1PNZZ6OZL3ycDp2OW"
+        }
+    },
+    "privilegekeydelete": {
+        "command": "privilegekeydelete",
+        "params": {
+            "token": {
+                "name": "token",
+                "value": "tokenKey"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_token_delete"
+        ],
+        "shortdesc": "delete an existing privilege key",
+        "description": "Deletes an existing token matching the token key specified with token.",
+        "usage": "privilegekeydelete token={tokenKey}",
+        "example": {
+            "request": "privilegekeydelete token=eKnFZQ9EK7G7MhtuQB6+N2B1PNZZ6OZL3ycDp2OW",
+            "response": null
+        }
+    },
+    "privilegekeylist": {
+        "command": "privilegekeylist",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_token_list"
+        ],
+        "shortdesc": "list all existing privilege keys on this server",
+        "description": "Displays a list of privilege keys available including their type and group IDs. Tokens can be used to gain access to specified server or channel groups. A privilege key is similar to a client with administrator privileges that adds you to a certain permission group, but without the necessity of a such a client with administrator privileges to actually exist. It is a long (random looking) string that can be used as a ticket into a specific server group.",
+        "usage": "privilegekeylist",
+        "example": {
+            "request": "privilegekeylist",
+            "response": "token=88CVUg\\\/zkujt+y+WfHdko79UcM4R6uyCL6nEfy3B token_type=0 token_id1=9 token_id2=0 ..."
+        }
+    },
+    "privilegekeyuse": {
+        "command": "privilegekeyuse",
+        "params": {
+            "token": {
+                "name": "token",
+                "value": "tokenKey"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_token_use"
+        ],
+        "shortdesc": "use a privilege key",
+        "description": "Use a token key gain access to a server or channel group. Please note that the server will automatically delete the token after it has been used.",
+        "usage": "privilegekeyuse token={tokenKey}",
+        "example": {
+            "request": "privilegekeyuse token=eKnFZQ9EK7G7MhtuQB6+N2B1PNZZ6OZL3ycDp2OW",
+            "response": null
+        }
+    },
+    "quit": {
+        "command": "quit",
+        "params": [],
+        "permissions": [],
+        "shortdesc": "close connection",
+        "description": "Closes the ServerQuery connection to the TeamSpeak 3 Server instance.",
+        "usage": "quit",
+        "example": {
+            "request": "quit",
+            "response": null
+        }
+    },
+    "sendtextmessage": {
+        "command": "sendtextmessage",
+        "params": {
+            "targetmode": {
+                "name": "targetmode",
+                "value": "1-3"
+            },
+            "target": {
+                "name": "target",
+                "value": "clientID"
+            },
+            "msg": {
+                "name": "msg",
+                "value": "text"
+            }
+        },
+        "permissions": [
+            "i_client_private_textmessage_power",
+            "i_client_needed_private_textmessage_power",
+            "b_client_server_textmessage_send",
+            "b_client_channel_textmessage_send"
+        ],
+        "shortdesc": "send text message",
+        "description": "Sends a text message to a specified target. If targetmode is set to 1, a message is sent to the client with the ID specified by target. If targetmode is set to 2 or 3, the target parameter will be ignored and a message is sent to the current channel or server respectively.",
+        "usage": "sendtextmessage targetmode={1-3} target={clientID} msg={text}",
+        "example": {
+            "request": "sendtextmessage targetmode=2 target=1 msg=Hello\\sWorld!",
+            "response": null
+        }
+    },
+    "servercreate": {
+        "command": "servercreate",
+        "params": {
+            "virtualserver_name": {
+                "name": "virtualserver_name",
+                "value": "serverName"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_create"
+        ],
+        "shortdesc": "create a virtual server",
+        "description": "Creates a new virtual server using the given properties and displays its ID, port and initial administrator privilege key. If virtualserver_port is not specified, the server will test for the first unused UDP port. The first virtual server will be running on UDP port 9987 by default. Subsequently started virtual servers will be running on increasing UDP port numbers. For detailed information, see Virtual Server Properties.",
+        "usage": "servercreate virtualserver_name={serverName}",
+        "example": {
+            "request": "servercreate virtualserver_name=TeamSpeak\\s]\\p[\\sServer virtualserver_port=9988 virtualserver_maxclients=32",
+            "response": "sid=2 virtualserver_port=9988 token=eKnFZQ9EK7G7MhtuQB6+N2B1PNZZ6OZL3ycDp2OW"
+        }
+    },
+    "serverdelete": {
+        "command": "serverdelete",
+        "params": {
+            "sid": {
+                "name": "sid",
+                "value": "serverID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_delete"
+        ],
+        "shortdesc": "delete a virtual server",
+        "description": "Deletes the virtual server specified with sid. Please note that only virtual servers in stopped state can be deleted.",
+        "usage": "serverdelete sid={serverID}",
+        "example": {
+            "request": "serverdelete sid=1",
+            "response": null
+        }
+    },
+    "serveredit": {
+        "command": "serveredit",
+        "params": {
+            "virtualserver_properties": {
+                "name": "virtualserver_properties",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_modify_name",
+            "b_virtualserver_modify_welcomemessage",
+            "b_virtualserver_modify_maxclients",
+            "b_virtualserver_modify_reserved_slots",
+            "b_virtualserver_modify_password",
+            "b_virtualserver_modify_default_servergroup",
+            "b_virtualserver_modify_default_channelgroup",
+            "b_virtualserver_modify_default_channeladmingroup",
+            "b_virtualserver_modify_ft_settings",
+            "b_virtualserver_modify_ft_quotas",
+            "b_virtualserver_modify_channel_forced_silence",
+            "b_virtualserver_modify_complain",
+            "b_virtualserver_modify_antiflood",
+            "b_virtualserver_modify_hostmessage",
+            "b_virtualserver_modify_hostbanner",
+            "b_virtualserver_modify_hostbutton",
+            "b_virtualserver_modify_port",
+            "b_virtualserver_modify_autostart",
+            "b_virtualserver_modify_needed_identity_security_level",
+            "b_virtualserver_modify_priority_speaker_dimm_modificator",
+            "b_virtualserver_modify_log_settings",
+            "b_virtualserver_modify_icon_id",
+            "b_virtualserver_modify_weblist",
+            "b_virtualserver_modify_min_client_version",
+            "b_virtualserver_modify_codec_encryption_mode"
+        ],
+        "shortdesc": "change virtual server properties",
+        "description": "Changes the selected virtual servers configuration using given properties. Note that this command accepts multiple properties which means that you're able to change all settings of the selected virtual server at once. For detailed information, see Virtual Server Properties.",
+        "usage": "serveredit [virtualserver_properties...]",
+        "example": {
+            "request": "serveredit virtualserver_name=TeamSpeak\\s]\\p[\\sServer virtualserver_maxclients=32",
+            "response": null
+        }
+    },
+    "servergroupadd": {
+        "command": "servergroupadd",
+        "params": {
+            "name": {
+                "name": "name",
+                "value": "groupName"
+            },
+            "type": {
+                "name": "type",
+                "value": "groupDbType"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_servergroup_create"
+        ],
+        "shortdesc": "create a server group",
+        "description": "Creates a new server group using the name specified with name and displays its ID. The optional type parameter can be used to create ServerQuery groups and template groups. For detailed information, see Definitions.",
+        "usage": "servergroupadd name={groupName} [type={groupDbType}]",
+        "example": {
+            "request": "servergroupadd name=Server\\sAdmin",
+            "response": "sgid=13"
+        }
+    },
+    "servergroupaddclient": {
+        "command": "servergroupaddclient",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "i_group_member_add_power",
+            "i_group_needed_member_add_power"
+        ],
+        "shortdesc": "add client to server group",
+        "description": "Adds a client to the server group specified with sgid. Please note that a client cannot be added to default groups or template groups.",
+        "usage": "servergroupaddclient sgid={groupID} cldbid={clientDBID}",
+        "example": {
+            "request": "servergroupaddclient sgid=16 cldbid=3",
+            "response": null
+        }
+    },
+    "servergroupaddperm": {
+        "command": "servergroupaddperm",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "assign permissions to server group",
+        "description": "Adds a set of specified permissions to the server group specified with sgid. Multiple permissions can be added by providing the four parameters of each permission. A permission can be specified by permid or permsid.",
+        "usage": "servergroupaddperm sgid={groupID} [permid={permID}...]",
+        "example": {
+            "request": "servergroupaddperm sgid=13 permid=17276 permvalue=50 permnegated=0 permskip=0|permid=21415 permvalue=20 permnegated=0",
+            "response": null
+        }
+    },
+    "servergroupautoaddperm": {
+        "command": "servergroupautoaddperm",
+        "params": {
+            "sgtype": {
+                "name": "sgtype",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "b_permission_modify_power_ignore"
+        ],
+        "shortdesc": "globally assign permissions to server groups",
+        "description": "Adds a set of specified permissions to *ALL* regular server groups on all virtual servers. The target groups will be identified by the value of their i_group_auto_update_type permission specified with sgtype. Multiple permissions can be added at once. A permission can be specified by permid or permsid. The known values for sgtype are: 10: Channel Guest 15: Server Guest 20: Query Guest 25: Channel Voice 30: Server Normal 35: Channel Operator 40: Channel Admin 45: Server Admin 50: Query Admin",
+        "usage": "servergroupautoaddperm sgtype={groupID} [permid={permID}...]",
+        "example": {
+            "request": "servergroupautoaddperm sgtype=45 permsid=b_virtualserver_start permvalue=1 permskip=0 permnegated=0",
+            "response": null
+        }
+    },
+    "servergroupautodelperm": {
+        "command": "servergroupautodelperm",
+        "params": {
+            "sgtype": {
+                "name": "sgtype",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "b_permission_modify_power_ignore"
+        ],
+        "shortdesc": "globally remove permissions from server group",
+        "description": "Removes a set of specified permissions from *ALL* regular server groups on all virtual servers. The target groups will be identified by the value of their i_group_auto_update_type permission specified with sgtype. Multiple permissions can be removed at once. A permission can be specified by permid or permsid. The known values for sgtype are: 10: Channel Guest 15: Server Guest 20: Query Guest 25: Channel Voice 30: Server Normal 35: Channel Operator 40: Channel Admin 45: Server Admin 50: Query Admin",
+        "usage": "servergroupautodelperm sgtype={groupID} [permid={permID}...]",
+        "example": {
+            "request": "servergroupautodelperm sgtype=45 permsid=b_virtualserver_start",
+            "response": null
+        }
+    },
+    "servergroupclientlist": {
+        "command": "servergroupclientlist",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "names": {
+                "name": "names",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_servergroup_client_list"
+        ],
+        "shortdesc": "list clients in a server group",
+        "description": "Displays the IDs of all clients currently residing in the server group specified with sgid. If you're using the optional -names option, the output will also contain the last known nickname and the unique identifier of the clients.",
+        "usage": "servergroupclientlist sgid={groupID} [-names]",
+        "example": {
+            "request": "servergroupclientlist sgid=16",
+            "response": "cldbid=7|cldbid=8|cldbid=9|cldbid=11|cldbid=13|cldbid=16|cldbid=18|cldbid=29|cldbid=32|cldbid=34|cldbid=37|cldbid=40|cldbid=47|cldbid=53"
+        }
+    },
+    "servergroupcopy": {
+        "command": "servergroupcopy",
+        "params": {
+            "ssgid": {
+                "name": "ssgid",
+                "value": "sourceGroupID"
+            },
+            "tsgid": {
+                "name": "tsgid",
+                "value": "targetGroupID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_servergroup_create",
+            "i_group_modify_power",
+            "i_group_needed_modify_power"
+        ],
+        "shortdesc": "create a copy of an existing server group",
+        "description": "Creates a copy of the server group specified with ssgid. If tsgid is set to 0, the server will create a new group. To overwrite an existing group, simply set tsgid to the ID of a designated target group. If a target group is set, the name parameter will be ignored. The type parameter can be used to create ServerQuery groups and template groups. For detailed information, see Definitions.",
+        "usage": "servergroupcopy ssgid={sourceGroupID} tsgid={targetGroupID}",
+        "example": {
+            "request": "servergroupcopy ssgid=6 tsgid=0 name=My\\sGroup\\s(Copy) type=1",
+            "response": "sgid=21"
+        }
+    },
+    "servergroupdel": {
+        "command": "servergroupdel",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "force": {
+                "name": "force",
+                "value": "1|0"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_servergroup_delete"
+        ],
+        "shortdesc": "delete a server group",
+        "description": "Deletes the server group specified with sgid. If force is set to 1, the server group will be deleted even if there are clients within.",
+        "usage": "servergroupdel sgid={groupID} force={1|0}",
+        "example": {
+            "request": "servergroupdel sgid=13",
+            "response": null
+        }
+    },
+    "servergroupdelclient": {
+        "command": "servergroupdelclient",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [
+            "i_group_member_remove_power",
+            "i_group_needed_member_remove_power"
+        ],
+        "shortdesc": "remove client from server group",
+        "description": "Removes a client specified with cldbid from the server group specified with sgid.",
+        "usage": "servergroupdelclient sgid={groupID} cldbid={clientDBID}",
+        "example": {
+            "request": "servergroupdelclient sgid=16 cldbid=3",
+            "response": null
+        }
+    },
+    "servergroupdelperm": {
+        "command": "servergroupdelperm",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "permid": {
+                "name": "permid",
+                "value": "permID"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power",
+            "i_permission_modify_power"
+        ],
+        "shortdesc": "remove permissions from server group",
+        "description": "Removes a set of specified permissions from the server group specified with sgid. Multiple permissions can be removed at once. A permission can be specified by permid or permsid.",
+        "usage": "servergroupdelperm sgid={groupID} [permid={permID}...]",
+        "example": {
+            "request": "servergroupdelperm sgid=16 permid=17276|permid=21415",
+            "response": null
+        }
+    },
+    "servergrouplist": {
+        "command": "servergrouplist",
+        "params": [],
+        "permissions": [
+            "b_serverinstance_modify_querygroup",
+            "b_serverinstance_modify_templates",
+            "b_virtualserver_servergroup_list"
+        ],
+        "shortdesc": "list server groups",
+        "description": "Displays a list of server groups available. Depending on your permissions, the output may also contain global ServerQuery groups and template groups.",
+        "usage": "servergrouplist",
+        "example": {
+            "request": "servergrouplist",
+            "response": "sgid=9 name=Server\\sAdmin type=1 iconid=300 savedb=1|sgid=10 name=Normal type=1 iconid=0 savedb=1|sgid=11 ..."
+        }
+    },
+    "servergrouppermlist": {
+        "command": "servergrouppermlist",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "permsid": {
+                "name": "permsid",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_servergroup_permission_list"
+        ],
+        "shortdesc": "list server group permissions",
+        "description": "Displays a list of permissions assigned to the server group specified with sgid. If the -permsid option is specified, the output will contain the permission names instead of the internal IDs.",
+        "usage": "servergrouppermlist sgid={groupID} [-permsid]",
+        "example": {
+            "request": "servergrouppermlist sgid=13",
+            "response": "permid=8470 permvalue=1 permnegated=0 permskip=0|permid=8475 permvalue=1 ..."
+        }
+    },
+    "servergrouprename": {
+        "command": "servergrouprename",
+        "params": {
+            "sgid": {
+                "name": "sgid",
+                "value": "groupID"
+            },
+            "name": {
+                "name": "name",
+                "value": "groupName"
+            }
+        },
+        "permissions": [
+            "i_group_modify_power",
+            "i_group_needed_modify_power"
+        ],
+        "shortdesc": "rename a server group",
+        "description": "Changes the name of the server group specified with sgid.",
+        "usage": "servergrouprename sgid={groupID} name={groupName}",
+        "example": {
+            "request": "servergrouprename sgid=13 name=New\\sName",
+            "response": null
+        }
+    },
+    "servergroupsbyclientid": {
+        "command": "servergroupsbyclientid",
+        "params": {
+            "cldbid": {
+                "name": "cldbid",
+                "value": "clientDBID"
+            }
+        },
+        "permissions": [],
+        "shortdesc": "get all server groups of specified client",
+        "description": "Displays all server groups the client specified with cldbid is currently residing in.",
+        "usage": "servergroupsbyclientid cldbid={clientDBID}",
+        "example": {
+            "request": "servergroupsbyclientid cldbid=18",
+            "response": "name=Server\\sAdmin sgid=6 cldbid=18"
+        }
+    },
+    "serveridgetbyport": {
+        "command": "serveridgetbyport",
+        "params": {
+            "virtualserver_port": {
+                "name": "virtualserver_port",
+                "value": "serverPort"
+            }
+        },
+        "permissions": [
+            "b_serverinstance_virtualserver_list"
+        ],
+        "shortdesc": "find database ID by virtual server port",
+        "description": "Displays the database ID of the virtual server running on the UDP port specified by virtualserver_port.",
+        "usage": "serveridgetbyport virtualserver_port={serverPort}",
+        "example": {
+            "request": "serveridgetbyport virtualserver_port=9987",
+            "response": "server_id=1"
+        }
+    },
+    "serverinfo": {
+        "command": "serverinfo",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_info_view"
+        ],
+        "shortdesc": "display virtual server properties",
+        "description": "Displays detailed configuration information about the selected virtual server including unique ID, number of clients online, configuration, etc. For detailed information, see Virtual Server Properties.",
+        "usage": "serverinfo",
+        "example": {
+            "request": "serverinfo",
+            "response": "virtualserver_port=9987 virtualserver_unique_identifier=zrPkjznB1tMnRwj01xx7RxXjqeY= virtualserver_name=TeamSpeak\\s]I[\\sServer ..."
+        }
+    },
+    "serverlist": {
+        "command": "serverlist",
+        "params": {
+            "uid": {
+                "name": "uid",
+                "value": null
+            },
+            "short": {
+                "name": "short",
+                "value": null
+            },
+            "all": {
+                "name": "all",
+                "value": null
+            },
+            "onlyoffline": {
+                "name": "onlyoffline",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_serverinstance_virtualserver_list"
+        ],
+        "shortdesc": "list virtual servers",
+        "description": "Displays a list of virtual servers including their ID, status, number of clients online, etc. If you're using the -all option, the server will list all virtual servers stored in the database. This can be useful when multiple server instances with different machine IDs are using the same database. The machine ID is used to identify the server instance a virtual server is associated with. The status of a virtual server can be either online, offline, booting up, shutting down or virtual online. While most of them are self-explanatory, virtual online is a bit more complicated. Whenever you select a virtual server which is currently stopped with the -virtual parameter, it will be started in virtual mode which means you are able to change its configuration, create channels or change permissions, but no regular TeamSpeak 3 Client can connect. As soon as the last ServerQuery client deselects the virtual server, its status will be changed back to offline.",
+        "usage": "serverlist [-uid] [-short] [-all] [-onlyoffline]",
+        "example": {
+            "request": "serverlist",
+            "response": "virtualserver_id=1 virtualserver_port=9987 virtualserver_status=online virtualserver_clientsonline=6 ..."
+        }
+    },
+    "servernotifyregister": {
+        "command": "servernotifyregister",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_notify_register"
+        ],
+        "shortdesc": "register for event notifications",
+        "description": "Registers for a specified category of events on a virtual server to receive notification messages. Depending on the notifications you've registered for, the server will send you a message on every event in the view of your ServerQuery client (e.g. clients joining your channel, incoming text messages, server configuration changes, etc). The event source is declared by the event parameter while id can be used to limit the notifications to a specific channel.",
+        "usage": "servernotifyregister",
+        "example": {
+            "request": "servernotifyregister event=server",
+            "response": null
+        }
+    },
+    "servernotifyunregister": {
+        "command": "servernotifyunregister",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_notify_unregister"
+        ],
+        "shortdesc": "unregister from event notifications",
+        "description": "Unregisters all events previously registered with servernotifyregister so you will no longer receive notification messages.",
+        "usage": "servernotifyunregister",
+        "example": {
+            "request": "servernotifyunregister",
+            "response": null
+        }
+    },
+    "serverprocessstop": {
+        "command": "serverprocessstop",
+        "params": [],
+        "permissions": [
+            "b_serverinstance_stop"
+        ],
+        "shortdesc": "shutdown server process",
+        "description": "Stops the entire TeamSpeak 3 Server instance by shutting down the process.",
+        "usage": "serverprocessstop",
+        "example": {
+            "request": "serverprocessstop",
+            "response": null
+        }
+    },
+    "serverrequestconnectioninfo": {
+        "command": "serverrequestconnectioninfo",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_connectioninfo_view"
+        ],
+        "shortdesc": "display virtual server connection info",
+        "description": "Displays detailed connection information about the selected virtual server including uptime, traffic information, etc.",
+        "usage": "serverrequestconnectioninfo",
+        "example": {
+            "request": "serverrequestconnectioninfo",
+            "response": "connection_filetransfer_bandwidth_sent=0 connection_filetransfer_bandwidth_received=0 connection_packets_sent_total=241454 ..."
+        }
+    },
+    "serversnapshotcreate": {
+        "command": "serversnapshotcreate",
+        "params": [],
+        "permissions": [
+            "b_virtualserver_snapshot_create"
+        ],
+        "shortdesc": "create snapshot of a virtual server",
+        "description": "Displays a snapshot of the selected virtual server containing all settings, groups and known client identities. The data from a server snapshot can be used to restore a virtual servers configuration, channels and permissions using the serversnapshotdeploy command.",
+        "usage": "serversnapshotcreate",
+        "example": {
+            "request": "serversnapshotcreate",
+            "response": "hash=bnTd2E1kNITHjJYRCFjgbKKO5P8=|virtualserver_unique_identifier=zrPkjznB1tMnRwj01xx7RxXjqeY= virtualserver_name=TeamSpeak\\s]I[\\sServer ..."
+        }
+    },
+    "serversnapshotdeploy": {
+        "command": "serversnapshotdeploy",
+        "params": {
+            "mapping": {
+                "name": "mapping",
+                "value": null
+            },
+            "virtualserver_snapshot": {
+                "name": "virtualserver_snapshot",
+                "value": null
+            }
+        },
+        "permissions": [
+            "b_virtualserver_snapshot_deploy"
+        ],
+        "shortdesc": "deploy snapshot of a virtual server",
+        "description": "Restores the selected virtual servers configuration using the data from a previously created server snapshot. Please note that the TeamSpeak 3 Server does NOT check for necessary permissions while deploying a snapshot so the command could be abused to gain additional privileges.",
+        "usage": "serversnapshotdeploy [-mapping] virtualserver_snapshot",
+        "example": {
+            "request": "serversnapshotdeploy hash=bnTd2E1kNITHjJYRCFjgbKKO5P8=|virtualserver_unique_identifier=zrPkjznB1tMnRwj01xx7RxXjq= ...",
+            "response": null
+        }
+    },
+    "serverstart": {
+        "command": "serverstart",
+        "params": {
+            "sid": {
+                "name": "sid",
+                "value": "serverID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_start_any",
+            "b_virtualserver_start"
+        ],
+        "shortdesc": "start a virtual server",
+        "description": "Starts the virtual server specified with sid. Depending on your permissions, you're able to start either your own virtual server only or all virtual servers in the server instance.",
+        "usage": "serverstart sid={serverID}",
+        "example": {
+            "request": "serverstart sid=1",
+            "response": null
+        }
+    },
+    "serverstop": {
+        "command": "serverstop",
+        "params": {
+            "sid": {
+                "name": "sid",
+                "value": "serverID"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_stop_any",
+            "b_virtualserver_stop"
+        ],
+        "shortdesc": "stop a virtual server",
+        "description": "Stops the virtual server specified with sid. Depending on your permissions, you're able to stop either your own virtual server only or all virtual servers in the server instance.",
+        "usage": "serverstop sid={serverID}",
+        "example": {
+            "request": "serverstop sid=1",
+            "response": null
+        }
+    },
+    "servertemppasswordadd": {
+        "command": "servertemppasswordadd",
+        "params": {
+            "pw": {
+                "name": "pw",
+                "value": "password"
+            },
+            "desc": {
+                "name": "desc",
+                "value": "description"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_modify_password"
+        ],
+        "shortdesc": "create a new temporary server password",
+        "description": "Sets a new temporary server password specified with pw. The temporary password will be valid for the number of seconds specified with duration. The client connecting with this password will automatically join the channel specified with tcid. If tcid is set to 0, the client will join the default channel.",
+        "usage": "servertemppasswordadd pw={password} desc={description}",
+        "example": {
+            "request": "servertemppasswordadd pw=secret desc=none duration=3600 tcid=117535 tcpw=secret",
+            "response": null
+        }
+    },
+    "servertemppassworddel": {
+        "command": "servertemppassworddel",
+        "params": {
+            "pw": {
+                "name": "pw",
+                "value": "password"
+            }
+        },
+        "permissions": [
+            "b_virtualserver_modify_password"
+        ],
+        "shortdesc": "delete an existing temporary server password",
+        "description": "Deletes the temporary server password specified with pw.",
+        "usage": "servertemppassworddel pw={password}",
+        "example": {
+            "request": "servertemppassworddel pw=secret",
+            "response": null
+        }
+    }
+}
