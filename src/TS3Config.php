@@ -1,5 +1,6 @@
 <?php
 /**
+ * Class TS3Config
  *
  * @filesource   TS3Config.php
  * @created      09.10.2016
@@ -11,18 +12,18 @@
 
 namespace chillerlan\Teamspeak;
 
+use chillerlan\Traits\ContainerAbstract;
+
 /**
- * Class TS3Config
+ * @property string $host
+ * @property int    $port
+ * @property int    $vserver
+ * @property string $query_user
+ * @property string $query_password
+ * @property string $storagedir
+ * @property string $filename
+ * @property string $apiversion
  */
-class TS3Config{
-
-	public $host = 'localhost';
-	public $port = 10011;
-	public $vserver = 1;
-	public $query_user;
-	public $query_password;
-
-	public $storagedir = __DIR__.'/../storage/';
-	public $filename = 'ts3help';
-	public $apiversion = '3.0.13.6';
+class TS3Config extends ContainerAbstract{
+	use TS3ConfigTrait;
 }

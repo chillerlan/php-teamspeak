@@ -12,6 +12,8 @@
 
 namespace chillerlan\Teamspeak;
 
+use chillerlan\Traits\ContainerInterface;
+
 /**
  *
  */
@@ -30,9 +32,9 @@ class TS3Client{
 	/**
 	 * TS3Client constructor.
 	 *
-	 * @param \chillerlan\Teamspeak\TS3Config $config
+	 * @param \chillerlan\Traits\ContainerInterface $config
 	 */
-	public function __construct(TS3Config $config){
+	public function __construct(ContainerInterface $config){
 		$this->config = $config;
 
 		if(!is_int($this->config->vserver)){

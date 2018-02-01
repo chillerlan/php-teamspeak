@@ -12,6 +12,8 @@
 
 namespace chillerlan\Teamspeak;
 
+use chillerlan\Traits\ContainerInterface;
+
 /**
  * @method TS3Response banadd($params = ['ip' => 'regexp', 'name' => 'regexp', 'uid' => 'clientUID'])
  * @method TS3Response banclient($params = ['clid' => 'clientID', 'time' => 'timeInSeconds', 'banreason' => 'text'])
@@ -144,9 +146,9 @@ class TS3QueryAPI extends TS3Client{
 	/**
 	 * TS3QueryAPI constructor.
 	 *
-	 * @param \chillerlan\Teamspeak\TS3Config $config
+	 * @param \chillerlan\Traits\ContainerInterface $config
 	 */
-	public function __construct(TS3Config $config){
+	public function __construct(ContainerInterface $config){
 		parent::__construct($config);
 		$this->connect();
 		$this->map_api();
