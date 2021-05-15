@@ -2,9 +2,7 @@
 /**
  * Class TS3Client
  *
- * @filesource   TS3Client.php
  * @created      02.10.2016
- * @package      chillerlan\Teamspeak
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2016 Smiley
  * @license      MIT
@@ -12,82 +10,90 @@
 
 namespace chillerlan\Teamspeak;
 
-use chillerlan\Traits\ContainerInterface;
+use chillerlan\Settings\SettingsContainerInterface;
+use Psr\Log\{LoggerAwareInterface, LoggerAwareTrait, LoggerInterface, NullLogger};
+use ErrorException, Throwable;
 
-/**
- *
- */
-class TS3Client{
+use function fclose, fsockopen, fwrite, is_resource, restore_error_handler,
+	set_error_handler, stream_get_contents, stream_set_timeout, trim;
+
+class TS3Client implements LoggerAwareInterface{
+	use LoggerAwareTrait;
 
 	/**
 	 * @var \chillerlan\Teamspeak\TS3Config
 	 */
-	protected $config;
+	protected SettingsContainerInterface $config;
 
 	/**
-	 * @var resource
+	 * @var resource|null
 	 */
 	protected $socket;
 
 	/**
 	 * TS3Client constructor.
 	 *
-	 * @param \chillerlan\Traits\ContainerInterface $config
+	 * @param \chillerlan\Settings\SettingsContainerInterface $config
+	 * @param \Psr\Log\LoggerInterface|null                   $logger
 	 */
-	public function __construct(ContainerInterface $config){
+	public function __construct(SettingsContainerInterface $config, LoggerInterface $logger = null){
 		$this->config = $config;
-
-		if(!is_int($this->config->vserver)){
-			$this->config->vserver = 1;
-		}
+		$this->logger = $logger ?? new NullLogger;
 	}
 
 	/**
 	 *
 	 */
 	public function __destruct(){
-		return $this->disconnect();
+		$this->disconnect();
 	}
 
 	/**
-	 * @return array
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function connect():array {
-		$this->socket = @fsockopen($this->config->host, $this->config->port, $errno, $errstr,3);
+	public function connect():TS3Client{
 
-		if(!$this->socket){
-			throw new TS3ClientException('could not connect: #'.$errno.' '.$errstr);
+		if(is_resource($this->socket)){
+			return $this;
 		}
 
+		/** @phan-suppress-next-line PhanTypeMismatchArgumentInternal stupid inconsistent callables... */
+		set_error_handler(function($severity, $msg, $file, $line){
+			throw new ErrorException($msg, 0, $severity, $file, $line);
+		});
+
+		try{
+			$this->socket = fsockopen($this->config->host, $this->config->port);
+		}
+		catch(Throwable $e){
+			throw new TS3ClientException('could not connect: #'.$e->getMessage());
+		}
+
+		restore_error_handler();
 		stream_set_timeout($this->socket, 1);
 
-		return [
-			$this->send('login '.$this->config->query_user.' '.$this->config->query_password),
-			$this->send('use sid='.$this->config->vserver)
-		];
+		$this->send('login client_login_name='.$this->config->query_user.' client_login_password='.$this->config->query_password);
+		$this->send('use sid='.$this->config->vserver);
+
+		return $this;
 	}
 
 	/**
-	 * @return array
+	 * @return \chillerlan\Teamspeak\TS3Client
 	 */
-	public function disconnect():array {
+	public function disconnect():TS3Client{
 
-		if($this->socket){
-			$r = [
-				$this->send('logout'),
-				$this->send('quit'),
-			];
+		if(is_resource($this->socket)){
+			$this->send('logout');
+			$this->send('quit');
 
 			fclose($this->socket);
 
 			// just in case the destructor runs into this when the socket is already closed.
 			$this->socket = null;
-
-			return $r;
 		}
 
-		return [];
+		return $this;
 	}
 
 	/**
@@ -96,7 +102,8 @@ class TS3Client{
 	 * @return \chillerlan\Teamspeak\TS3Response
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function send(string $command):TS3Response {
+	public function send(string $command):TS3Response{
+		$this->logger->debug('command: '.$command);
 
 		if(!$this->socket){
 			throw new TS3ClientException('not connected');
@@ -108,11 +115,15 @@ class TS3Client{
 			throw new TS3ClientException('empty command');
 		}
 
-		if(fwrite($this->socket, $command.PHP_EOL) !== false){
-			return new TS3Response($command, stream_get_contents($this->socket));
+		if(fwrite($this->socket, $command."\n") !== false){
+			$response = stream_get_contents($this->socket);
+
+			$this->logger->debug('response: '.$response);
+
+			return new TS3Response($command, $response);
 		}
 
-		throw new TS3ClientException('could not send command: '.$command); // @codeCoverageIgnore
+		throw new TS3ClientException('could not send command: '.$command);
 	}
 
 }

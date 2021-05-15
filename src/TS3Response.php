@@ -2,15 +2,16 @@
 /**
  * Class TS3Response
  *
- * @filesource   TS3Response.php
  * @created      09.10.2016
- * @package      chillerlan\Teamspeak
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2016 Smiley
  * @license      MIT
  */
 
 namespace chillerlan\Teamspeak;
+
+use stdClass;
+use function array_map, array_pop, chr, explode, is_numeric, preg_match, property_exists, str_replace, strpos, trim;
 
 /**
  * @property string    $commandline
@@ -19,50 +20,30 @@ namespace chillerlan\Teamspeak;
  * @property array     $data
  * @property \stdClass $error
  */
-class TS3Response{
+final class TS3Response{
 
-	/**
-	 * @var string
-	 */
-	protected $commandline;
-
-	/**
-	 * @var array
-	 */
-	protected $commandlist = [];
-
-	/**
-	 * @var string
-	 */
-	protected $raw;
-
-	/**
-	 * @var array
-	 */
-	protected $data = [];
-
-	/**
-	 * @var \stdClass
-	 */
-	protected $error;
+	private string $commandline;
+	private array $commandlist = [];
+	private string $raw;
+	private array $data = [];
+	private stdClass $error;
 
 	/**
 	 * TS3Response constructor.
-	 *
-	 * @param string $command
-	 * @param string $raw
 	 */
 	public function __construct(string $command, string $raw){
 		$this->commandline = $command;
 		$this->raw         = $raw;
 
+		$this->error       = new stdClass;
+		$this->error->id   = null;
+		$this->error->msg  = null;
+
 		$this->parse_response();
 	}
 
 	/**
-	 * @param $property
-	 *
-	 * @return mixed
+	 * @return mixed|null
 	 */
 	public function __get(string $property){
 
@@ -70,37 +51,28 @@ class TS3Response{
 			return $this->{$property};
 		}
 
-		return false;
+		return null;
 	}
 
 	/**
 	 *
 	 */
-	protected function parse_response(){
+	private function parse_response():void{
+		$this->commandlist = array_map(fn($c) => trim($c, "\r\n\t- "), explode(' ', trim($this->commandline)));
+		$this->data        = array_map(fn($d) => trim($d), explode("\n", trim($this->raw)));
 
-		$this->commandlist = array_map(function($c){
-			return trim($c, "\r\n\t- ");
-		}, explode(' ', trim($this->commandline)));
-
-		$this->data = array_map(function($d){
-			return trim($d);
-		}, explode("\n", trim($this->raw)));
-
-		$this->error = new \stdClass;
-
-		$this->error->id  = null;
-		$this->error->msg = null;
-
-		if(preg_match(
-			   '/^(:?error id=)(?P<id>[\d]+)(:? msg=)(?P<msg>.*)$/isU',
-			   array_pop($this->data),
-			   $match
-		   ) > 0
-		){
+		if(preg_match('/^(:?error id=)(?P<id>[\d]+)(:? msg=)(?P<msg>.*)$/isU', array_pop($this->data), $match) > 0){
 			$this->error->id  = (int)$match['id'];
 			$this->error->msg = $match['msg'];
 		}
 
+	}
+
+	/**
+	 * @return \stdClass[]|\stdClass
+	 */
+	public function parseList(){
+		return self::parse_list($this->data[0] ?? '');
 	}
 
 	/**
@@ -112,18 +84,19 @@ class TS3Response{
 	 *
 	 * @return \stdClass
 	 */
-	public function parse_kv(string $str = null):\stdClass {
-		$str = !empty($str) ? $str : $this->data[0];
+	public static function parse_kv(string $str):stdClass{
 		$str = explode(' ', $str);
-
-		$r = new \stdClass;
+		$r   = new stdClass;
 
 		foreach($str as $pair){
-			$kv = explode('=', $pair);
+			$kv  = explode('=', $pair);
+			$val = isset($kv[1]) && !empty($kv[1]) ? self::unescape($kv[1]) : null;
 
-			$r->{$kv[0]} = isset($kv[1]) && !empty($kv[1])
-				? $this->unescape($kv[1])
-				: null;
+			if(is_numeric($val)){
+				$val += 0;
+			}
+
+			$r->{$kv[0]} = $val;
 		}
 
 		return $r;
@@ -136,41 +109,34 @@ class TS3Response{
 	 *
 	 * @param string $str
 	 *
-	 * @return array|\stdClass
+	 * @return \stdClass[]|\stdClass
 	 */
-	public function parse_list(string $str = null) {
-		$str = !empty($str) ? $str : $this->data[0];
+	public static function parse_list(string $str){
 
-		if(strpos($str, '|')){
+		if(strpos($str, '|') !== false){
 			$str = explode('|', $str);
-
 			$arr = [];
 
 			foreach($str as $line){
-				$arr[] = $this->parse_kv($line);
+				$arr[] = self::parse_kv($line);
 			}
 
 			return $arr;
 		}
 
-		return $this->parse_kv($str);
+		return self::parse_kv($str);
 	}
 
 	/**
-	 * @param string $str
-	 * @param bool   $reverse
-	 *
-	 * @return string $str
-	 * @internal param bool $reverse
-	 *
+	 * @phan-suppress PhanTypeMismatchArgumentNullableInternal
 	 */
-	public function unescape(string $str = null, bool $reverse = false):string {
+	public static function unescape(string $str = null, bool $reverse = null):string{
 		$search  = ["\\\\", "\/", "\s", "\p", "\a", "\b", "\f", "\n", "\r", "\t", "\v"];
 		$replace = [chr(92), chr(47), chr(32), chr(124), chr(7), chr(8), chr(12), chr(10), chr(3), chr(9), chr(11)];
 
-		return !$reverse
-			? str_replace($search, $replace, $str)
-			: str_replace($replace, $search, $str);
+		return $reverse
+			? str_replace($replace, $search, $str)
+			: str_replace($search, $replace, $str);
 	}
 
 }

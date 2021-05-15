@@ -1,7 +1,5 @@
 <?php
 /**
- *
- * @filesource   common.php
  * @created      12.10.2016
  * @author       Smiley <smiley@chillerlan.net>
  * @copyright    2016 Smiley
@@ -12,19 +10,26 @@ namespace chillerlan\TeamspeakExample;
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use chillerlan\Teamspeak\TS3Client;
-use chillerlan\Teamspeak\TS3Config;
-use chillerlan\Traits\DotEnv;
+use chillerlan\DotEnv\DotEnv;
+use Psr\Log\AbstractLogger;
+use chillerlan\Teamspeak\{TS3Client, TS3Config};
 
-(new DotEnv(__DIR__.'/../config', '.env'))->load();
+$env = (new DotEnv(__DIR__.'/../config', '.env', false))->load();
 
-$ts3config = new TS3Config;
+$options = [
+	'host'           => $env->TS3_HOST,
+	'port'           => $env->TS3_PORT,
+	'vserver'        => $env->TS3_VSERVER,
+	'query_user'     => $env->TS3_QUERY_USER,
+	'query_password' => $env->TS3_QUERY_PASS,
+];
 
-$ts3config->host           = getenv('TS3_HOST');
-$ts3config->port           = getenv('TS3_PORT');
-$ts3config->vserver        = getenv('TS3_VSERVER');
-$ts3config->query_user     = getenv('TS3_QUERY_USER');
-$ts3config->query_password = getenv('TS3_QUERY_PASS');
+$options = new TS3Config($options);
 
-$ts3 = new TS3Client($ts3config);
-$ts3->connect();
+$logger = new class() extends AbstractLogger{
+	public function log($level, $message, array $context = []){
+		echo sprintf('[%s][%s] %s', date('Y-m-d H:i:s'), substr($level, 0, 4), trim($message))."\n";
+	}
+};
+
+$ts3 = new TS3Client($options, $logger);
