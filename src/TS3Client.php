@@ -16,6 +16,8 @@ use ErrorException, Throwable;
 
 use function fclose, fsockopen, fwrite, is_resource, restore_error_handler,
 	set_error_handler, stream_get_contents, stream_set_timeout, trim;
+use function implode;
+use function is_int;
 
 class TS3Client implements LoggerAwareInterface{
 	use LoggerAwareTrait;
@@ -72,8 +74,12 @@ class TS3Client implements LoggerAwareInterface{
 		restore_error_handler();
 		stream_set_timeout($this->socket, 1);
 
-		$this->send('login client_login_name='.$this->config->query_user.' client_login_password='.$this->config->query_password);
-		$this->send('use sid='.$this->config->vserver);
+		$this->send('login', [
+			'client_login_name'     => $this->config->query_user,
+			'client_login_password' => $this->config->query_password,
+		]);
+
+		$this->send('use', ['sid' => $this->config->vserver]);
 
 		return $this;
 	}
@@ -97,23 +103,33 @@ class TS3Client implements LoggerAwareInterface{
 	}
 
 	/**
-	 * @param string $command
-	 *
-	 * @return \chillerlan\Teamspeak\TS3Response
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
-	public function send(string $command):TS3Response{
+	public function send(string $command, array $params = null):TS3Response{
 
 		if(!$this->socket){
 			throw new TS3ClientException('not connected');
 		}
 
 		$command = trim($command);
-		$this->logger->debug('command: '.$command);
 
 		if(empty($command)){
 			throw new TS3ClientException('empty command');
 		}
+
+		if(!empty($params)){
+			$args = [];
+
+			foreach($params as $k => $param){
+				$args[] = is_int($k)
+					? '-'.trim($param)
+					: trim($k).'='.$param;
+			}
+
+			$command .= ' '.implode(' ', $args);
+		}
+
+		$this->logger->debug('command: '.$command);
 
 		if(fwrite($this->socket, $command."\n") !== false){
 			$response = stream_get_contents($this->socket);

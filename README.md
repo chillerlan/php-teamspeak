@@ -58,10 +58,10 @@ $serverInfo = $ts3->send('serverinfo');
 
 var_dump($serverInfo->parseList());
 
-$channelList = $ts3->send('channellist -topic -limits -flags -voice -icon -secondsempty');
+$channelList = $ts3->send('channellist', ['topic', 'limits', 'flags', 'voice', 'icon', 'secondsempty']);
 var_dump($channelList->parseList());
 
-$clientList = $ts3->send('clientlist -uid -away -voice -times -groups -info -icon -country');
+$clientList = $ts3->send('clientlist', ['uid', 'away', 'voice', 'times', 'groups', 'info', 'icon', 'country']);
 var_dump($clientList->parseList());
 
 // ...
