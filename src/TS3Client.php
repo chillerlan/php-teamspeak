@@ -103,13 +103,13 @@ class TS3Client implements LoggerAwareInterface{
 	 * @throws \chillerlan\Teamspeak\TS3ClientException
 	 */
 	public function send(string $command):TS3Response{
-		$this->logger->debug('command: '.$command);
 
 		if(!$this->socket){
 			throw new TS3ClientException('not connected');
 		}
 
 		$command = trim($command);
+		$this->logger->debug('command: '.$command);
 
 		if(empty($command)){
 			throw new TS3ClientException('empty command');

@@ -1,6 +1,6 @@
 {
 	"name": "chillerlan/php-teamspeak",
-	"description": "A simple teamspeak client module for PHP7.4+",
+	"description": "A simple teamspeak3 query client for PHP7.4+",
 	"license": "MIT",
 	"type": "library",
 	"minimum-stability": "stable",
